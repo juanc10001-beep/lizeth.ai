@@ -1,0 +1,3022 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello Lizeth.ai</title>
+  <link rel="icon" type="image/png" href="assets/avatar.png">
+  <link rel="apple-touch-icon" href="assets/avatar.png">
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: rgba(255, 255, 255, .82);
+      --ink: #1d1d1f;
+      --muted: #6e7380;
+      --blue: #007aff;
+      --green: #34c759;
+      --lila: #af52de;
+      --yellow: #ffd60a;
+      --soft-blue: #eaf4ff;
+      --soft-green: #e9f8ef;
+      --soft-lila: #f4edff;
+      --danger-soft: #fff0d7;
+      --line: rgba(80, 93, 120, .16);
+      --shadow: 0 22px 60px rgba(31, 35, 45, .10);
+      --button-min: 76px;
+      --radius: 24px;
+      --scan: #ffbf2f;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.95), rgba(242,246,255,.88) 42%, rgba(250,245,255,.9)),
+        var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 5px solid var(--yellow);
+      outline-offset: 3px;
+    }
+
+    .app {
+      width: min(1180px, 100%);
+      min-height: 100vh;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(31, 35, 45, .08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--soft-blue), var(--soft-lila));
+      font-size: 30px;
+      border: 1px solid var(--line);
+      color: var(--blue);
+      font-weight: 900;
+      flex: 0 0 auto;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: clamp(26px, 3.6vw, 44px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: clamp(22px, 2.6vw, 32px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .subtitle, .muted {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .screen {
+      display: none;
+      flex: 1;
+      animation: fade .18s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: .45; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 3vw, 34px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .hero {
+      min-height: calc(100vh - 154px);
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .welcome {
+      font-size: clamp(22px, 3vw, 36px);
+      line-height: 1.28;
+      max-width: 760px;
+    }
+
+    .assistant-card {
+      display: grid;
+      place-items: center;
+      min-height: 420px;
+      background: linear-gradient(150deg, rgba(255,255,255,.92) 0%, rgba(234,244,255,.88) 48%, rgba(246,240,255,.86) 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      text-align: center;
+      padding: 28px;
+    }
+
+    .assistant-face {
+      width: min(310px, 74vw);
+      aspect-ratio: 1;
+      border-radius: 40px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      border: 2px solid #d6e6f7;
+      box-shadow: inset 0 0 0 18px #f7fbff, 0 20px 55px rgba(31, 35, 45, .14);
+      font-size: 92px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      min-height: var(--button-min);
+      padding: 18px 22px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #1b8cff, var(--blue));
+      color: #fff;
+      font-weight: 800;
+      font-size: clamp(20px, 2.2vw, 28px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+      box-shadow: 0 14px 28px rgba(0, 122, 255, .18);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      flex: 1 1 230px;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(1px) scale(.99); }
+
+    .btn.secondary {
+      background: var(--soft-blue);
+      color: var(--ink);
+      box-shadow: none;
+      border: 1px solid var(--line);
+    }
+
+    .btn.green {
+      background: linear-gradient(180deg, #45d56f, var(--green));
+      box-shadow: 0 10px 20px rgba(37, 167, 111, .16);
+    }
+
+    .btn.lila {
+      background: linear-gradient(180deg, #bf73ea, var(--lila));
+      box-shadow: 0 10px 20px rgba(139, 110, 232, .16);
+    }
+
+    .btn.yellow {
+      background: linear-gradient(180deg, #ffe27a, var(--yellow));
+      color: #243040;
+      box-shadow: none;
+    }
+
+    .btn.small {
+      min-height: 54px;
+      flex: 0 1 auto;
+      font-size: 17px;
+      padding: 12px 16px;
+      border-radius: 15px;
+      font-weight: 800;
+    }
+
+    .btn.disabled,
+    .btn:disabled {
+      opacity: .52;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .topic-card, .choice-card, .conversation-card {
+      min-height: 150px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 12px 32px rgba(31, 35, 45, .08);
+    }
+
+    .topic-card.ready {
+      background: linear-gradient(140deg, rgba(255,255,255,.96), rgba(233,248,239,.92));
+    }
+
+    .completed-card {
+      opacity: .72;
+      background: linear-gradient(140deg, rgba(255,255,255,.82), rgba(233,248,239,.78));
+      cursor: default;
+    }
+
+    .completed-card h3::after {
+      content: " - done";
+      color: var(--green);
+      font-size: .72em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+      background: rgba(244, 237, 255, .9);
+      color: #4b3f72;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .video-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #edf4ff, #f6f0ff);
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+
+    .learn-card {
+      min-height: 420px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      text-align: center;
+      gap: 22px;
+      background: linear-gradient(150deg, rgba(255,255,255,.96), rgba(239,248,255,.9));
+    }
+
+    .phrase {
+      font-size: clamp(44px, 8vw, 92px);
+      font-weight: 900;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .translation {
+      font-size: clamp(23px, 3vw, 36px);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .activity-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .question {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      line-height: 1.14;
+      margin: 16px 0;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .choice {
+      min-height: calc(var(--button-min) + 34px);
+      border-radius: 20px;
+      background: rgba(255,255,255,.9);
+      border: 3px solid var(--line);
+      color: var(--ink);
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 900;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(31, 35, 45, .08);
+    }
+
+    .choice.visual-choice {
+      font-size: clamp(54px, 8vw, 92px);
+      line-height: 1;
+      min-height: 140px;
+    }
+
+    .visual-label {
+      display: block;
+      margin-top: 10px;
+      font-size: clamp(18px, 2vw, 26px);
+      line-height: 1.1;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .reading-card {
+      padding: clamp(18px, 3vw, 30px);
+      border-radius: 22px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid var(--line);
+      font-size: clamp(26px, 3.2vw, 42px);
+      line-height: 1.35;
+      font-weight: 850;
+      box-shadow: 0 12px 34px rgba(31, 35, 45, .08);
+    }
+
+    .sentence-builder {
+      display: grid;
+      gap: 18px;
+    }
+
+    .sentence-slots,
+    .word-bank {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .sentence-slot {
+      min-width: 150px;
+      min-height: 78px;
+      border-radius: 18px;
+      border: 3px dashed #a9bdd8;
+      background: rgba(234,244,255,.78);
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 900;
+    }
+
+    .word-chip {
+      min-height: 72px;
+      padding: 16px 22px;
+      border-radius: 18px;
+      background: #fff;
+      border: 2px solid var(--line);
+      color: var(--ink);
+      font-size: clamp(22px, 2.7vw, 34px);
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(31, 35, 45, .08);
+    }
+
+    .word-chip.used {
+      opacity: .42;
+      pointer-events: none;
+    }
+
+    .choice.scan-highlight {
+      border-color: var(--scan);
+      background: #fff7d8;
+      box-shadow: 0 0 0 8px rgba(255, 191, 47, .25);
+      transform: scale(1.02);
+    }
+
+    .choice.incorrect-choice,
+    .sentence-slot.incorrect-choice {
+      border-color: #ff3b30;
+      background: #fff0f0;
+      color: #8a1212;
+      box-shadow: 0 0 0 8px rgba(255, 59, 48, .14);
+    }
+
+    .choice.correct-choice,
+    .sentence-slot.correct-choice {
+      border-color: var(--green);
+      background: #effaf3;
+      box-shadow: 0 0 0 8px rgba(52, 199, 89, .13);
+    }
+
+    .color-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .mini-swatch {
+      width: clamp(54px, 8vw, 88px);
+      aspect-ratio: 1;
+      border-radius: 18px;
+      border: 3px solid var(--line);
+      box-shadow: 0 12px 26px rgba(31, 35, 45, .10);
+    }
+
+    .color-learn-card {
+      min-height: 460px;
+      background:
+        linear-gradient(150deg, rgba(255,255,255,.96), rgba(245,247,252,.9));
+    }
+
+    .color-sample {
+      width: min(230px, 52vw);
+      aspect-ratio: 1;
+      border-radius: 42px;
+      border: 4px solid var(--line);
+      box-shadow: 0 24px 60px rgba(31, 35, 45, .16);
+    }
+
+    .color-choice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 18px;
+      text-align: left;
+    }
+
+    .choice-swatch {
+      width: 72px;
+      aspect-ratio: 1;
+      border-radius: 18px;
+      border: 3px solid var(--line);
+      box-shadow: 0 10px 22px rgba(31, 35, 45, .12);
+    }
+
+    .feedback {
+      min-height: 58px;
+      margin-top: 16px;
+      font-size: clamp(22px, 2.6vw, 34px);
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .scan-panel {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #fffaf0;
+      border: 1px solid #f1d187;
+    }
+
+    .voice-recorder {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(31, 35, 45, .06);
+    }
+
+    .name-display {
+      min-height: 92px;
+      padding: 18px 22px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.9);
+      border: 2px solid var(--line);
+      font-size: clamp(34px, 6vw, 68px);
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      letter-spacing: 0;
+    }
+
+    .alphabet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 12px;
+    }
+
+    .letter-btn {
+      min-height: 74px;
+      border-radius: 18px;
+      background: rgba(234, 244, 255, .96);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(31, 35, 45, .07);
+    }
+
+    .certificate {
+      padding: clamp(22px, 4vw, 42px);
+      border-radius: 28px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(244,237,255,.9)),
+        #fff;
+      border: 3px solid rgba(255, 214, 10, .85);
+      box-shadow: 0 24px 70px rgba(31, 35, 45, .14);
+      text-align: center;
+    }
+
+    .certificate-title {
+      font-size: clamp(34px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .floating-assistant {
+      position: fixed;
+      right: clamp(12px, 2vw, 28px);
+      bottom: clamp(12px, 2vw, 26px);
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(190px, 270px) 82px;
+      grid-template-areas:
+        "bubble avatar"
+        "actions avatar";
+      gap: 10px 12px;
+      align-items: end;
+      pointer-events: none;
+    }
+
+    .assistant-bubble {
+      grid-area: bubble;
+      padding: 14px 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.9);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 45px rgba(31, 35, 45, .14);
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.25;
+      pointer-events: auto;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .assistant-bubble .bubble-en {
+      display: block;
+    }
+
+    .assistant-bubble .bubble-es {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .88em;
+      font-weight: 800;
+    }
+
+    .assistant-actions {
+      grid-area: actions;
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      pointer-events: auto;
+    }
+
+    .assistant-repeat,
+    .assistant-hide {
+      min-height: 42px;
+      padding: 8px 12px;
+      border-radius: 14px;
+      background: rgba(234, 244, 255, .96);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 900;
+      box-shadow: 0 8px 20px rgba(31, 35, 45, .08);
+    }
+
+    .assistant-avatar-button {
+      grid-area: avatar;
+      width: 82px;
+      aspect-ratio: 1;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,.9);
+      box-shadow: 0 18px 45px rgba(31, 35, 45, .2);
+      background: #fff;
+      pointer-events: auto;
+    }
+
+    .assistant-avatar-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .floating-assistant.collapsed {
+      grid-template-columns: 82px;
+      grid-template-areas: "avatar";
+    }
+
+    .floating-assistant.collapsed .assistant-bubble,
+    .floating-assistant.collapsed .assistant-actions {
+      display: none;
+    }
+
+    .select-highlight {
+      width: 100%;
+      min-height: 104px;
+      margin-top: 12px;
+      font-size: clamp(24px, 3vw, 40px);
+    }
+
+    .conversation-layout {
+      display: grid;
+      grid-template-columns: .88fr 1.12fr;
+      gap: 18px;
+    }
+
+    .scene {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(242,248,255,.9));
+    }
+
+    .scene-emoji {
+      font-size: clamp(92px, 14vw, 180px);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .ai-line {
+      background: var(--soft-blue);
+      border: 1px solid #bdd5f2;
+      padding: 18px;
+      border-radius: 20px;
+      font-size: clamp(26px, 3.4vw, 42px);
+      font-weight: 900;
+      line-height: 1.14;
+    }
+
+    .stars {
+      font-size: clamp(54px, 10vw, 116px);
+      line-height: 1;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .progressbar {
+      height: 26px;
+      background: #e7eef8;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      min-width: min(100%, 360px);
+    }
+
+    .progressbar span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      border-radius: inherit;
+      transition: width .25s ease;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      min-height: 56px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 19px;
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 76px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .switch-row input {
+      width: 30px;
+      height: 30px;
+      min-height: 30px;
+      flex: 0 0 auto;
+    }
+
+    .high-contrast {
+      --bg: #f8fbff;
+      --panel: #ffffff;
+      --ink: #071421;
+      --muted: #253548;
+      --line: #35475b;
+      --soft-blue: #d3e8ff;
+      --soft-green: #d5f2e4;
+      --soft-lila: #e2d9ff;
+    }
+
+    .extra-large {
+      --button-min: 96px;
+    }
+
+    .status {
+      min-height: 42px;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 820px) {
+      .app { padding: 12px; }
+      header { align-items: flex-start; }
+      .hero, .conversation-layout { grid-template-columns: 1fr; }
+      .assistant-card { min-height: 280px; }
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .top-actions { width: 100%; justify-content: stretch; }
+      .top-actions .btn.small { flex: 1 1 130px; }
+      .activity-head { flex-direction: column; }
+      .choice { min-height: 96px; }
+      .floating-assistant {
+        grid-template-columns: minmax(160px, 1fr) 70px;
+        left: 12px;
+        right: 12px;
+      }
+      .assistant-avatar-button { width: 70px; border-radius: 20px; }
+      .assistant-bubble { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <header>
+      <div class="brand">
+        <div class="avatar" aria-hidden="true"><img src="assets/avatar.png" alt=""></div>
+        <div>
+          <strong>Hello Lizeth.ai</strong>
+          <p class="subtitle">Your English friend</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn small secondary" data-go="home">Home</button>
+        <button class="btn small secondary" data-go="topics">Topics</button>
+        <button class="btn small secondary" data-go="profile">Name</button>
+        <button class="btn small secondary" data-go="accessibility">Accessibility</button>
+      </div>
+    </header>
+
+    <section class="screen active" id="home">
+      <div class="panel hero">
+        <div class="hero-copy">
+          <div class="badge">Friendly AI assistant</div>
+          <h1>Hello Lizeth.ai</h1>
+          <p class="subtitle" style="font-size: clamp(24px, 3vw, 38px); font-weight: 800;">Your English friend</p>
+          <p class="welcome">Hello <span data-student-name>Lizeth</span>! I am ready to learn with you.</p>
+          <p class="welcome">Hola <span data-student-name>Lizeth</span>, estoy lista para aprender contigo.</p>
+          <div class="grid two">
+            <button class="btn green" id="startBtn">Start</button>
+            <button class="btn" data-go="topics">Topics</button>
+            <button class="btn lila" id="continueBtn">Continue</button>
+            <button class="btn secondary" data-go="profile">Student name</button>
+            <button class="btn secondary" data-go="accessibility">Accessibility</button>
+            <button class="btn yellow" data-go="teacher">Teacher Mode</button>
+          </div>
+        </div>
+        <div class="assistant-card" aria-label="AI assistant">
+          <div>
+            <div class="assistant-face" aria-hidden="true">&#128522;</div>
+            <p class="subtitle" style="margin-top: 18px; font-size: 22px; font-weight: 800;">I am here with you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="profile"></section>
+    <section class="screen" id="topics"></section>
+    <section class="screen" id="topic"></section>
+    <section class="screen" id="watch"></section>
+    <section class="screen" id="learn"></section>
+    <section class="screen" id="practice"></section>
+    <section class="screen" id="activityMenu"></section>
+    <section class="screen" id="activityPlayer"></section>
+    <section class="screen" id="conversationMenu"></section>
+    <section class="screen" id="conversation"></section>
+    <section class="screen" id="review"></section>
+    <section class="screen" id="colorsTopic"></section>
+    <section class="screen" id="colorsLearn"></section>
+    <section class="screen" id="colorsPractice"></section>
+    <section class="screen" id="colorsReview"></section>
+    <section class="screen" id="accessibility"></section>
+    <section class="screen" id="teacher"></section>
+
+    <aside class="floating-assistant" id="floatingAssistant" aria-label="Hello Lizeth assistant">
+      <div class="assistant-bubble" id="assistantBubble">
+        <span class="bubble-en">I am here with you.</span>
+        <span class="bubble-es">Estoy contigo.</span>
+      </div>
+      <div class="assistant-actions">
+        <button class="assistant-repeat" id="assistantRepeat" aria-label="Repeat assistant message">Listen</button>
+        <button class="assistant-hide" id="assistantHide" aria-label="Hide assistant">Hide</button>
+      </div>
+      <button class="assistant-avatar-button" id="assistantAvatarButton" aria-label="Assistant">
+        <img src="assets/avatar.png" alt="">
+      </button>
+    </aside>
+  </main>
+
+  <script>
+    const STORE_KEYS = {
+      settings: "helloLizethSettings",
+      progress: "helloLizethProgress",
+      content: "helloLizethContent",
+      profile: "helloLizethProfile"
+    };
+
+    const defaultSettings = {
+      autoScan: false,
+      scanSpeed: "medium",
+      autoVoice: true,
+      buttonSize: "large",
+      contrast: "normal",
+      supportLanguage: "spanish",
+      englishVoice: "",
+      spanishVoice: "",
+      englishRate: 0.7,
+      spanishRate: 0.82,
+      voicePitch: 1,
+      recordedVoice: false
+    };
+
+    const defaultProfile = {
+      studentName: ""
+    };
+
+    const defaultProgress = {
+      greetingsSeen: [],
+      practicesDone: [],
+      conversationsCompleted: [],
+      greetingActivityDone: [],
+      colorsSeen: [],
+      colorsPracticesDone: [],
+      lastModule: "home"
+    };
+
+    const defaultContent = {
+      videoUrl: "https://www.youtube-nocookie.com/embed/2o46gKeQTwc?rel=0&playsinline=1",
+      greetings: [
+        { en: "Hello", es: "Hola" },
+        { en: "Hi", es: "Hola" },
+        { en: "Good morning", es: "Buenos dias" },
+        { en: "Good afternoon", es: "Buenas tardes" },
+        { en: "Good evening", es: "Buenas tardes / noches" },
+        { en: "Good night", es: "Buenas noches" },
+        { en: "Goodbye", es: "Adios" },
+        { en: "See you", es: "Nos vemos" },
+        { en: "How are you?", es: "Como estas?" },
+        { en: "I am fine.", es: "Estoy bien." },
+        { en: "I am happy.", es: "Estoy feliz." },
+        { en: "I am sad.", es: "Estoy triste." },
+        { en: "Thank you.", es: "Gracias." },
+        { en: "Nice to meet you.", es: "Mucho gusto." }
+      ],
+      practiceQuestions: [
+        { q: 'How do you say "hola"?', options: ["Hello", "Goodbye"], answer: "Hello" },
+        { q: 'How do you say "buenos dias"?', options: ["Good morning", "Good night"], answer: "Good morning" },
+        { q: 'How do you answer "How are you?"', options: ["I am fine.", "Goodbye."], answer: "I am fine." },
+        { q: "Choose a goodbye.", options: ["See you.", "Good morning."], answer: "See you." }
+      ],
+      colors: [
+        { en: "Red", es: "Rojo", hex: "#ff3b30" },
+        { en: "Blue", es: "Azul", hex: "#007aff" },
+        { en: "Yellow", es: "Amarillo", hex: "#ffd60a" },
+        { en: "Green", es: "Verde", hex: "#34c759" },
+        { en: "Purple", es: "Morado", hex: "#af52de" },
+        { en: "Orange", es: "Naranja", hex: "#ff9500" },
+        { en: "Pink", es: "Rosado", hex: "#ff2d55" },
+        { en: "Black", es: "Negro", hex: "#1d1d1f" },
+        { en: "White", es: "Blanco", hex: "#ffffff", border: "#c8c8d0" }
+      ],
+      colorQuestions: [
+        { q: "Choose red.", options: ["Red", "Blue"], answer: "Red" },
+        { q: "Choose blue.", options: ["Green", "Blue"], answer: "Blue" },
+        { q: 'How do you say "verde"?', options: ["Green", "Yellow"], answer: "Green" },
+        { q: "Choose yellow.", options: ["Yellow", "Purple"], answer: "Yellow" },
+        { q: 'How do you say "naranja"?', options: ["Orange", "Pink"], answer: "Orange" }
+      ]
+    };
+
+    const topics = [
+      { id: "greetings", name: "Greetings", icon: "&#128075;", ready: true },
+      { id: "colors", name: "Colors", icon: "&#127912;", ready: true },
+      { id: "animals", name: "Animals", icon: "&#128062;", ready: false },
+      { id: "emotions", name: "Emotions", icon: "&#128578;", ready: false },
+      { id: "school", name: "School objects", icon: "&#9999;", ready: false },
+      { id: "commands", name: "Commands", icon: "&#128073;", ready: false }
+    ];
+
+    const conversations = [
+      {
+        id: "school",
+        title: "Conversation 1 - At School",
+        context: "Lizeth arrives at school.",
+        scene: "&#127979;",
+        turns: [
+          { ai: "Hello, Lizeth!", answers: ["Hello, teacher."] },
+          { ai: "How are you today?", answers: ["I am fine.", "I am happy.", "I am sad."] },
+          { ai: "Great! Let's learn English.", answers: ["Yes.", "Okay."] },
+          { ai: "Goodbye, Lizeth.", answers: ["Goodbye.", "See you."] }
+        ]
+      },
+      {
+        id: "morning",
+        title: "Conversation 2 - Morning Routine",
+        context: "In the morning.",
+        scene: "&#9728;",
+        turns: [
+          { ai: "Good morning, Lizeth.", answers: ["Good morning."] },
+          { ai: "Are you ready?", answers: ["Yes.", "No."] },
+          { ai: "Let's say hello.", answers: ["Hello."] },
+          { ai: "Very good!", answers: ["Thank you."] }
+        ]
+      },
+      {
+        id: "friend",
+        title: "Conversation 3 - With a Friend",
+        context: "A friend says hello to Lizeth.",
+        scene: "&#128103;",
+        turns: [
+          { ai: "Hi, Lizeth!", answers: ["Hi."] },
+          { ai: "How are you?", answers: ["I am fine.", "I am happy.", "I am sad."] },
+          { ai: "Nice to see you.", answers: ["Nice to see you."] },
+          { ai: "See you later.", answers: ["See you."] }
+        ]
+      },
+      {
+        id: "home",
+        title: "Conversation 4 - At Home",
+        context: "At home.",
+        scene: "&#127968;",
+        turns: [
+          { ai: "Good afternoon, Lizeth.", answers: ["Good afternoon."] },
+          { ai: "How are you?", answers: ["I am fine.", "I am happy.", "I am sad."] },
+          { ai: "Do you want to practice English?", answers: ["Yes.", "No."] },
+          { ai: "Great job, Lizeth.", answers: ["Thank you."] }
+        ]
+      },
+      {
+        id: "night",
+        title: "Conversation 5 - Night Time",
+        context: "Night time.",
+        scene: "&#127769;",
+        turns: [
+          { ai: "Good night, Lizeth.", answers: ["Good night."] },
+          { ai: "Are you tired?", answers: ["Yes.", "No."] },
+          { ai: "It's time to rest.", answers: ["Okay."] },
+          { ai: "See you tomorrow.", answers: ["See you."] }
+        ]
+      },
+      {
+        id: "goodbye",
+        title: "Conversation 6 - Saying Goodbye",
+        context: "Leaving school.",
+        scene: "&#128652;",
+        turns: [
+          { ai: "Goodbye, Lizeth.", answers: ["Goodbye."] },
+          { ai: "See you later.", answers: ["See you."] },
+          { ai: "Have a nice day.", answers: ["Thank you."] },
+          { ai: "You did great today.", answers: ["Thank you."] }
+        ]
+      },
+      {
+        id: "playground",
+        title: "Mission 7 - Playground",
+        context: "At the playground.",
+        scene: "&#127912;",
+        turns: [
+          { ai: "Hi, Lizeth!", answers: ["Hi.", "Hello."] },
+          { ai: "How are you?", answers: ["I am happy.", "I am fine."] },
+          { ai: "Nice to see you.", answers: ["Nice to see you."] },
+          { ai: "See you.", answers: ["See you."] }
+        ]
+      },
+      {
+        id: "firstMeeting",
+        title: "Mission 8 - First Meeting",
+        context: "Meeting someone new.",
+        scene: "&#128075;",
+        turns: [
+          { ai: "Hello, Lizeth.", answers: ["Hello."] },
+          { ai: "Nice to meet you.", answers: ["Nice to meet you."] },
+          { ai: "How are you?", answers: ["I am fine.", "I am happy."] },
+          { ai: "Goodbye.", answers: ["Goodbye."] }
+        ]
+      },
+      {
+        id: "teacherGreeting",
+        title: "Mission 9 - Teacher Greeting",
+        context: "The teacher greets the student.",
+        scene: "&#127979;",
+        turns: [
+          { ai: "Good morning, Lizeth.", answers: ["Good morning."] },
+          { ai: "How are you today?", answers: ["I am fine.", "I am happy.", "I am sad."] },
+          { ai: "Thank you, Lizeth.", answers: ["Thank you."] },
+          { ai: "See you later.", answers: ["See you."] }
+        ]
+      },
+      {
+        id: "familyGreeting",
+        title: "Mission 10 - Family Greeting",
+        context: "Greeting family at home.",
+        scene: "&#127968;",
+        turns: [
+          { ai: "Good afternoon, Lizeth.", answers: ["Good afternoon."] },
+          { ai: "How are you?", answers: ["I am fine.", "I am happy.", "I am sad."] },
+          { ai: "Thank you.", answers: ["Thank you."] },
+          { ai: "Good night.", answers: ["Good night."] }
+        ]
+      }
+    ];
+
+    const greetingActivityGroups = {
+      speaking: [
+        { id: "sp1", title: "School Greeting Question", prompt: "What do you say when you meet your teacher at school?", say: "What do you say when you meet your teacher at school?", options: ["Hello", "Good night", "Goodbye"], answer: "Hello" },
+        { id: "sp2", title: "Morning Greeting Question", prompt: "What do you say in the morning?", say: "What do you say in the morning?", options: ["Good morning", "Good night", "Goodbye"], answer: "Good morning" },
+        { id: "sp3", title: "Complete the Morning Greeting", prompt: "Which word completes the sentence: Good _____?", say: "Good morning.", options: ["morning", "night", "goodbye"], answer: "morning" },
+        { id: "sp4", title: "Friendly Response Question", prompt: "The assistant says: Hello {name}! What do you say?", say: "Hello {name}! What do you say?", options: ["Hello!", "Goodbye!", "Good night!"], answer: "Hello!" },
+        { id: "sp5", title: "Feelings Answer Question", prompt: "Someone asks: How are you? What answer can you give?", say: "How are you? What answer can you give?", options: ["I am fine.", "Goodbye.", "Good morning."], answer: "I am fine." },
+        { id: "sp6", title: "Conversation Step Question", prompt: "In a conversation, after Hello, someone asks: How are you? What do you answer?", say: "After Hello, someone asks: How are you? What do you answer?", options: ["I am fine.", "Goodbye.", "Hello."], answer: "I am fine." },
+        { id: "sp7", title: "Happy Morning Question", prompt: "It is morning and you feel happy. What can you say?", say: "It is morning and you feel happy. What can you say?", options: ["I am happy.", "Goodbye.", "Good night."], answer: "I am happy." },
+        { id: "sp8", title: "Leaving Question", prompt: "You are leaving class. What goodbye can you say?", say: "You are leaving class. What goodbye can you say?", options: ["See you.", "Hello.", "Good morning."], answer: "See you." },
+        { id: "sp9", title: "Best Choice Question", prompt: "You want to end a conversation. Which phrase do you choose?", say: "You want to end a conversation. Which phrase do you choose?", options: ["Hello", "Good night", "Goodbye"], answer: "Goodbye" },
+        { id: "sp10", title: "Introduce Yourself Question", prompt: "How do you introduce yourself in English?", say: "How do you introduce yourself in English?", options: ["I am {name}.", "Goodbye.", "Good night."], answer: "I am {name}." }
+      ],
+      reading: [
+        { id: "rd1", type: "comprehension", title: "Read: At School", passage: "Hello! My name is {name}. I arrive at school in the morning. My teacher says, Good morning!", prompt: "What does the teacher say in the morning?", options: ["Good morning", "Good night", "Goodbye"], answer: "Good morning" },
+        { id: "rd2", type: "comprehension", title: "Read: With a Friend", passage: "A friend says, Hi {name}! {name} smiles and says, Hi! Then the friend asks, How are you?", prompt: "What greeting does the friend use?", options: ["Hi", "Goodbye", "Thank you"], answer: "Hi" },
+        { id: "rd3", type: "cloze", title: "Puzzle: Morning Greeting", passage: "At school, the teacher says: Good _____.", prompt: "Choose the missing word.", options: ["morning", "night", "sad"], answer: "morning" },
+        { id: "rd4", type: "cloze", title: "Puzzle: Feeling Sentence", passage: "I am _____.", prompt: "Choose the word that completes a happy sentence.", options: ["happy", "goodbye", "night"], answer: "happy" },
+        { id: "rd5", type: "sentence", title: "Build a Sentence", prompt: "Build this sentence: I am fine.", words: ["fine.", "I", "am"], answerWords: ["I", "am", "fine."] },
+        { id: "rd6", type: "sentence", title: "Build a Greeting", prompt: "Build this greeting: Good morning.", words: ["morning.", "Good", "Goodbye"], answerWords: ["Good", "morning."] },
+        { id: "rd7", type: "comprehension", title: "Read: Goodbye Time", passage: "{name} is leaving school. The teacher says, See you! {name} answers, Goodbye!", prompt: "What does the teacher say?", options: ["See you", "Good morning", "I am sad"], answer: "See you" },
+        { id: "rd8", type: "comprehension", title: "Read: Feeling Happy", passage: "{name} says: Hello! I am happy today. I like English.", prompt: "How does {name} feel?", options: ["I am happy.", "I am sad.", "Good night."], answer: "I am happy." },
+        { id: "rd9", type: "cloze", title: "Dialogue Puzzle", passage: "Teacher: How are you? Student: I am _____.", prompt: "Choose the missing word.", options: ["fine", "goodbye", "night"], answer: "fine" },
+        { id: "rd10", type: "sentence", title: "Build a Goodbye", prompt: "Build this sentence: See you.", words: ["you.", "Hello", "See"], answerWords: ["See", "you."] }
+      ],
+      listening: [
+        { id: "ls1", title: "Listen and Choose", prompt: "What did you hear?", say: "Hello", options: ["Hello", "Goodbye"], answer: "Hello" },
+        { id: "ls2", title: "Listen and Match", prompt: "Choose the picture.", say: "Good morning", options: ["&#9728;", "&#127769;"], answer: "&#9728;" },
+        { id: "ls3", title: "Listen and Identify", prompt: "What did you hear?", say: "Goodbye", options: ["Goodbye", "Hello"], answer: "Goodbye" },
+        { id: "ls4", title: "Listen and Select Picture", prompt: "Choose the picture for Hi.", say: "Hi", options: ["&#128075;", "&#127769;"], answer: "&#128075;" },
+        { id: "ls5", title: "Listen to a Conversation", prompt: "What greeting did they use?", say: "Teacher: Hello. Student: Hello.", options: ["Hello", "Goodbye"], answer: "Hello" },
+        { id: "ls6", title: "Listen and Complete", prompt: "Good ______", say: "Good morning", options: ["morning", "night"], answer: "morning" },
+        { id: "ls7", title: "Listen and Identify Emotion", prompt: "Choose the emotion.", say: "I am happy.", options: ["&#128522;", "&#128546;"], answer: "&#128522;" },
+        { id: "ls8", title: "Listen and Answer", prompt: "Choose the answer.", say: "How are you?", options: ["I am fine.", "Goodbye."], answer: "I am fine." },
+        { id: "ls9", title: "Listen and Sequence", prompt: "What comes first?", say: "Hello. How are you? Goodbye.", options: ["Hello", "How are you?", "Goodbye"], answer: "Hello" },
+        { id: "ls10", title: "Listen to Real Context", prompt: "Where are we?", say: "Good morning, {name}!", options: ["Morning", "Night"], answer: "Morning" }
+      ]
+    };
+
+    let settings = load(STORE_KEYS.settings, defaultSettings);
+    let progress = load(STORE_KEYS.progress, defaultProgress);
+    let content = load(STORE_KEYS.content, defaultContent);
+    let profile = load(STORE_KEYS.profile, defaultProfile);
+    if (!content.videoUrl || content.videoUrl.includes("2o46gKeQTwc") || content.videoUrl.includes("youtube.com/embed/")) {
+      content.videoUrl = defaultContent.videoUrl;
+      save(STORE_KEYS.content, content);
+    }
+    let learnIndex = 0;
+    let practiceIndex = 0;
+    let colorLearnIndex = 0;
+    let colorPracticeIndex = 0;
+    let currentConversation = null;
+    let conversationTurn = 0;
+    let scanTimer = null;
+    let scanIndex = -1;
+    let currentChoices = [];
+    let currentChoiceHandler = null;
+    let currentActivityGroup = "";
+    let currentActivityIndex = 0;
+    let recognition = null;
+    let availableVoices = [];
+    let recorder = null;
+    let recorderStream = null;
+    let recorderChunks = [];
+    let recordedVoiceUrl = "";
+    let assistantMessage = {
+      en: "I am here with you.",
+      es: "Estoy contigo."
+    };
+    let sessionMemory = {
+      completedActivities: new Set(),
+      completedMissions: new Set(),
+      stars: 0
+    };
+
+    const app = document.getElementById("app");
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const positive = [
+      "Great job, {name}!",
+      "Excellent work!",
+      "You are doing amazing!",
+      "Wonderful!",
+      "Fantastic!",
+      "I'm proud of you!",
+      "Nice speaking!",
+      "You are learning so fast!",
+      "Beautiful effort!",
+      "That was very clear!",
+      "You did it!",
+      "Amazing listening!",
+      "Great reading!",
+      "I love how you tried!",
+      "You are getting stronger in English!",
+      "Super work!",
+      "That was a smart choice!",
+      "Keep going, {name}!",
+      "You are an English star!",
+      "That was wonderful practice!",
+      "I am here with you, and you are doing great!",
+      "You completed another step!"
+    ];
+    const activityComments = [
+      "You completed another greeting activity.",
+      "You are becoming an English expert.",
+      "You practiced greetings very well today.",
+      "That activity helped your English grow.",
+      "You are building your greeting skills.",
+      "Another small mission completed.",
+      "Your English friend is very proud of your practice.",
+      "You listened, tried, and learned.",
+      "You are moving through Greetings beautifully.",
+      "That was a strong English moment."
+    ];
+    const gentle = [
+      "That's okay, let's try again.",
+      "Listen again, {name}.",
+      "I am here with you.",
+      "No rush. We can repeat it.",
+      "Let's try one more time together.",
+      "You are safe to practice here.",
+      "Mistakes help us learn.",
+      "Take your time.",
+      "I can say it again.",
+      "Let's listen slowly."
+    ];
+    const recordedAudio = { en: {}, es: {} };
+
+    function deepCopy(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function load(key, fallback) {
+      try {
+        const saved = localStorage.getItem(key);
+        return saved ? { ...deepCopy(fallback), ...JSON.parse(saved) } : deepCopy(fallback);
+      } catch (error) {
+        return deepCopy(fallback);
+      }
+    }
+
+    function save(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch (error) {}
+    }
+
+    function markLast(module) {
+      progress.lastModule = module;
+      save(STORE_KEYS.progress, progress);
+    }
+
+    function show(id) {
+      stopScan();
+      screens.forEach(screen => screen.classList.toggle("active", screen.id === id));
+      markLast(id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (id === "topics") renderTopics();
+      if (id === "profile") renderProfile();
+      if (id === "topic") renderTopic();
+      if (id === "watch") renderWatch();
+      if (id === "learn") renderLearn();
+      if (id === "practice") renderPractice();
+      if (id === "activityMenu") renderActivityMenu();
+      if (id === "activityPlayer") renderActivityPlayer();
+      if (id === "conversationMenu") renderConversationMenu();
+      if (id === "review") renderReview();
+      if (id === "colorsTopic") renderColorsTopic();
+      if (id === "colorsLearn") renderColorsLearn();
+      if (id === "colorsPractice") renderColorsPractice();
+      if (id === "colorsReview") renderColorsReview();
+      if (id === "accessibility") renderAccessibility();
+      if (id === "teacher") renderTeacher();
+      updateAssistantForScreen(id);
+    }
+
+    function setAssistantMessage(en, es) {
+      assistantMessage = { en: personalize(en), es: personalize(es) };
+      const bubble = document.getElementById("assistantBubble");
+      if (bubble) {
+        bubble.innerHTML = `
+          <span class="bubble-en">${escapeHtml(assistantMessage.en)}</span>
+          <span class="bubble-es">${escapeHtml(assistantMessage.es || "")}</span>
+        `;
+      }
+    }
+
+    function studentName() {
+      return (profile.studentName || "Lizeth").trim() || "Lizeth";
+    }
+
+    function personalize(text) {
+      return String(text || "").replaceAll("{name}", studentName()).replaceAll("Lizeth", studentName());
+    }
+
+    function refreshStudentName() {
+      document.querySelectorAll("[data-student-name]").forEach(node => {
+        node.textContent = studentName();
+      });
+    }
+
+    function renderProfile() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      const current = studentName();
+      document.getElementById("profile").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Student profile</span>
+            <h2>What is your name?</h2>
+            <p class="subtitle">Choose letters. I will say each letter in English.</p>
+          </div>
+          <div class="name-display" id="nameDisplay">${escapeHtml(current)}</div>
+          <div class="alphabet-grid">
+            ${letters.map(letter => `<button class="letter-btn" data-letter="${letter}">${letter}</button>`).join("")}
+          </div>
+          <div class="grid three">
+            <button class="btn secondary" id="deleteLetter">Delete</button>
+            <button class="btn lila" id="clearName">Clear</button>
+            <button class="btn green" id="saveName">Save name</button>
+          </div>
+          <button class="btn secondary" data-go="home">Back home</button>
+          <p class="status" id="profileStatus"></p>
+        </div>
+      `;
+      let draftName = current === "Lizeth" && !profile.studentName ? "" : current;
+      const display = document.getElementById("nameDisplay");
+      const updateDisplay = () => {
+        display.textContent = draftName || "Choose letters";
+      };
+      document.querySelectorAll("[data-letter]").forEach(button => {
+        button.addEventListener("click", () => {
+          const letter = button.dataset.letter;
+          draftName += letter;
+          updateDisplay();
+          speakEnglish(letter);
+        });
+      });
+      document.getElementById("deleteLetter").addEventListener("click", () => {
+        draftName = draftName.slice(0, -1);
+        updateDisplay();
+      });
+      document.getElementById("clearName").addEventListener("click", () => {
+        draftName = "";
+        updateDisplay();
+      });
+      document.getElementById("saveName").addEventListener("click", () => {
+        profile.studentName = toTitleCase(draftName || "Lizeth");
+        save(STORE_KEYS.profile, profile);
+        refreshStudentName();
+        document.getElementById("profileStatus").textContent = `Hello ${studentName()}!`;
+        setAssistantMessage(`Hello ${studentName()}! I will call you by your name.`, `Hola ${studentName()}. Desde ahora te llamare por tu nombre.`);
+        speakAssistant(`Hello ${studentName()}!`, `Hola ${studentName()}!`);
+      });
+      updateDisplay();
+    }
+
+    function toTitleCase(value) {
+      const clean = String(value || "").toLowerCase();
+      return clean.charAt(0).toUpperCase() + clean.slice(1);
+    }
+
+    function updateAssistantForScreen(id) {
+      const messages = {
+        home: ["Hello {name}! I am ready to learn with you.", "Hola {name}, estoy lista para aprender contigo."],
+        profile: ["Choose your name, {name}. I will say each letter in English.", "Escoge tu nombre. Yo digo cada letra en ingles."],
+        topics: ["Choose a topic, {name}. I will help you.", "Elige un tema, {name}. Yo te ayudo."],
+        topic: ["Let's practice greetings, {name}.", "Practiquemos saludos, {name}."],
+        watch: ["Let's watch and learn greetings.", "Vamos a mirar y aprender saludos."],
+        learn: ["Let's explore greeting words, {name}.", "Exploremos palabras de saludo, {name}."],
+        practice: ["Choose one answer, {name}. There is no rush.", "Elige una respuesta, {name}. No hay afan."],
+        conversationMenu: ["Choose a mission, {name}. Completed missions stay finished.", "Elige una mision, {name}. Las misiones completadas quedan cerradas."],
+        conversation: ["I will talk with you one step at a time, {name}.", "Hablare contigo paso a paso, {name}."],
+        review: ["Look at your progress, {name}. Great job!", "Mira tu progreso, {name}. Muy bien."],
+        colorsTopic: ["Let's learn colors, {name}.", "Aprendamos colores, {name}."],
+        colorsLearn: ["Look at the color and listen, {name}.", "Mira el color y escucha, {name}."],
+        colorsPractice: ["Choose the color you hear, {name}.", "Elige el color que escuchas, {name}."],
+        colorsReview: ["Beautiful work with colors, {name}!", "Muy buen trabajo con los colores, {name}."],
+        accessibility: ["Here we can make the app more comfortable.", "Aqui podemos hacer la app mas comoda."],
+        teacher: ["Teacher Mode helps adults adjust the lesson.", "El modo docente ayuda a ajustar la leccion."]
+      };
+      const selected = messages[id] || messages.home;
+      setAssistantMessage(selected[0], selected[1]);
+    }
+
+    function refreshVoices() {
+      if (!("speechSynthesis" in window)) return [];
+      availableVoices = window.speechSynthesis.getVoices() || [];
+      return availableVoices;
+    }
+
+    function voiceLabel(voice) {
+      return `${voice.name} (${voice.lang})${voice.localService ? "" : " online"}`;
+    }
+
+    function findVoice(savedName, lang) {
+      refreshVoices();
+      if (!availableVoices.length) return null;
+      if (savedName) {
+        const saved = availableVoices.find(voice => voice.name === savedName);
+        if (saved) return saved;
+      }
+
+      const languageVoices = availableVoices.filter(voice => voice.lang.toLowerCase().startsWith(lang.toLowerCase().slice(0, 2)));
+      const scored = languageVoices.map(voice => {
+        const name = voice.name.toLowerCase();
+        const voiceLang = voice.lang.toLowerCase();
+        let score = 0;
+
+        if (lang.toLowerCase().startsWith("es")) {
+          if (voiceLang === "es-us") score += 80;
+          if (voiceLang === "es-mx") score += 75;
+          if (voiceLang === "es-co") score += 70;
+          if (voiceLang === "es-419") score += 70;
+          if (voiceLang.startsWith("es-")) score += 25;
+          if (name.includes("sabina") || name.includes("dalia") || name.includes("paulina") || name.includes("paloma") || name.includes("maria")) score += 35;
+          if (name.includes("google")) score += 18;
+          if (name.includes("microsoft")) score += 12;
+          if (voiceLang === "es-es" || name.includes("spain") || name.includes("españa")) score -= 35;
+        } else {
+          if (name.includes("google us english")) score += 60;
+          if (name.includes("jenny") || name.includes("aria") || name.includes("zira")) score += 40;
+          if (voiceLang === "en-us") score += 30;
+          if (name.includes("google")) score += 15;
+          if (name.includes("microsoft")) score += 10;
+        }
+
+        if (voice.default) score += 4;
+        return { voice, score };
+      }).sort((a, b) => b.score - a.score);
+
+      return (scored[0] && scored[0].voice) || languageVoices[0] || null;
+    }
+
+    function makeUtterance(text, lang, savedVoice, rate) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voice = findVoice(savedVoice, lang);
+      utterance.lang = voice ? voice.lang : lang;
+      utterance.voice = voice;
+      utterance.rate = Number(rate) || 0.75;
+      utterance.pitch = Number(settings.voicePitch) || 1;
+      utterance.volume = 0.92;
+      return utterance;
+    }
+
+    async function playRecordedAudio(src) {
+      if (!settings.recordedVoice || !src) return false;
+      try {
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+        const audio = new Audio(src);
+        audio.preload = "auto";
+        await audio.play();
+        await new Promise(resolve => {
+          audio.onended = resolve;
+          audio.onerror = resolve;
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function recordedSource(text, language) {
+      const library = recordedAudio[language] || {};
+      return library[normalize(text)] || "";
+    }
+
+    async function speak(text, lang, rate, savedVoice) {
+      if (!settings.autoVoice) return;
+      const language = lang.toLowerCase().startsWith("es") ? "es" : "en";
+      if (await playRecordedAudio(recordedSource(text, language))) return;
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = makeUtterance(text, lang, savedVoice, rate);
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function speakEnglish(text) {
+      speak(text, "en-US", settings.englishRate, settings.englishVoice);
+    }
+
+    function speakSpanish(text) {
+      speak(text, "es-CO", settings.spanishRate, settings.spanishVoice);
+    }
+
+    async function speakAssistant(textEnglish, textSpanish) {
+      if (!settings.autoVoice) return;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      const playedEnglish = await playRecordedAudio(recordedSource(textEnglish, "en"));
+      const playedSpanish = await playRecordedAudio(recordedSource(textSpanish, "es"));
+      if (playedEnglish || playedSpanish) {
+        if (!playedEnglish) speakEnglish(textEnglish);
+        if (!playedSpanish) speakSpanish(textSpanish);
+        return;
+      }
+      if (!("speechSynthesis" in window)) return;
+      const first = makeUtterance(textEnglish, "en-US", settings.englishVoice, settings.englishRate);
+      const second = makeUtterance(textSpanish, "es-CO", settings.spanishVoice, settings.spanishRate);
+      first.onend = () => window.speechSynthesis.speak(second);
+      window.speechSynthesis.speak(first);
+    }
+
+    function progressPercent() {
+      const greetings = content.greetings.length ? progress.greetingsSeen.length / content.greetings.length : 0;
+      const practice = content.practiceQuestions.length ? progress.practicesDone.length / content.practiceQuestions.length : 0;
+      const conv = conversations.length ? progress.conversationsCompleted.length / conversations.length : 0;
+      const totalActivities = Object.values(greetingActivityGroups).flat().length;
+      const activities = totalActivities ? progress.greetingActivityDone.length / totalActivities : 0;
+      return Math.round(((greetings + practice + conv + activities) / 4) * 100);
+    }
+
+    function colorsProgressPercent() {
+      const seen = content.colors.length ? progress.colorsSeen.length / content.colors.length : 0;
+      const practice = content.colorQuestions.length ? progress.colorsPracticesDone.length / content.colorQuestions.length : 0;
+      return Math.round(((seen + practice) / 2) * 100);
+    }
+
+    function greetingsTopicComplete() {
+      const totalActivities = Object.values(greetingActivityGroups).flat().length;
+      return progress.greetingsSeen.length >= content.greetings.length &&
+        progress.greetingActivityDone.length >= totalActivities &&
+        progress.conversationsCompleted.length >= conversations.length;
+    }
+
+    function renderProgressLine() {
+      const pct = progressPercent();
+      return `
+        <div class="stack">
+          <strong>Greetings progress: ${pct}%</strong>
+          <div class="progressbar" aria-label="Greetings progress"><span style="width: ${pct}%"></span></div>
+        </div>
+      `;
+    }
+
+    function renderColorsProgressLine() {
+      const pct = colorsProgressPercent();
+      return `
+        <div class="stack">
+          <strong>Colors progress: ${pct}%</strong>
+          <div class="progressbar" aria-label="Colors progress"><span style="width: ${pct}%"></span></div>
+        </div>
+      `;
+    }
+
+    function renderLearningProgressLine() {
+      const pct = Math.round((progressPercent() + colorsProgressPercent()) / 2);
+      return `
+        <div class="stack">
+          <strong>Learning progress: ${pct}%</strong>
+          <div class="progressbar" aria-label="Learning progress"><span style="width: ${pct}%"></span></div>
+        </div>
+      `;
+    }
+
+    function renderTopics() {
+      document.getElementById("topics").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <h2>Topics</h2>
+              <p class="subtitle">Choose one topic. Greetings and Colors are ready now.</p>
+            </div>
+            ${renderLearningProgressLine()}
+          </div>
+          <div class="grid three">
+            ${topics.map(topic => `
+              <button class="topic-card ${topic.ready ? "ready" : ""}" data-topic="${topic.id}" ${topic.ready ? "" : "aria-disabled='true'"}>
+                <span class="scene-emoji" style="font-size: 54px;">${topic.icon}</span>
+                <h3>${topic.name}</h3>
+                <span class="badge">${topic.ready ? "Ready" : "Coming soon"}</span>
+              </button>
+            `).join("")}
+          </div>
+          <button class="btn secondary" data-go="home">Back home</button>
+        </div>
+      `;
+      document.querySelectorAll("[data-topic]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (btn.dataset.topic === "greetings") show("topic");
+          else if (btn.dataset.topic === "colors") show("colorsTopic");
+          else speakEnglish("Coming soon.");
+        });
+      });
+    }
+
+    function renderTopic() {
+      document.getElementById("topic").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Topic 1</span>
+              <h2>Greetings</h2>
+              <p class="subtitle">Vocabulary, speaking, reading, listening, and conversation missions.</p>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          ${sessionSummaryText() ? `<div class="ai-line">${escapeHtml(sessionSummaryText())}</div>` : ""}
+          <div class="grid two">
+            <button class="btn" data-go="watch">Watch & Learn</button>
+            <button class="btn green" data-go="learn">Vocabulary</button>
+            <button class="btn lila" data-activity-group="speaking">Speaking</button>
+            <button class="btn yellow" data-activity-group="reading">Reading</button>
+            <button class="btn" data-activity-group="listening">Listening</button>
+            <button class="btn green" data-go="conversationMenu">Conversation Missions</button>
+            <button class="btn lila" data-go="practice">Quick Practice</button>
+            <button class="btn secondary" data-go="review">Review</button>
+            <button class="btn secondary" data-go="topics">Back to topics</button>
+          </div>
+        </div>
+      `;
+      document.querySelectorAll("[data-activity-group]").forEach(button => {
+        button.addEventListener("click", () => {
+          currentActivityGroup = button.dataset.activityGroup;
+          currentActivityIndex = 0;
+          show("activityMenu");
+        });
+      });
+    }
+
+    function activityGroupTitle(group) {
+      if (group === "speaking") return "Speaking";
+      if (group === "reading") return "Reading";
+      if (group === "listening") return "Listening";
+      return "Activities";
+    }
+
+    function renderActivityMenu() {
+      const activities = greetingActivityGroups[currentActivityGroup] || [];
+      const title = activityGroupTitle(currentActivityGroup);
+      document.getElementById("activityMenu").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Topic 1 - Greetings</span>
+              <h2>${title}</h2>
+              <p class="subtitle">Choose an activity. Each one can be repeated without time limit.</p>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="grid two">
+            ${activities.map((activity, index) => `
+              <button class="topic-card" data-activity-index="${index}">
+                <span class="badge">Activity ${index + 1}</span>
+                <h3>${escapeHtml(activity.title)}</h3>
+                <p class="subtitle">${escapeHtml(personalize(activity.prompt))}</p>
+              </button>
+            `).join("")}
+          </div>
+          <button class="btn secondary" data-go="topic">Back to Greetings</button>
+        </div>
+      `;
+      document.querySelectorAll("[data-activity-index]").forEach(button => {
+        button.addEventListener("click", () => {
+          currentActivityIndex = Number(button.dataset.activityIndex);
+          show("activityPlayer");
+        });
+      });
+    }
+
+    function renderActivityPlayer() {
+      const activities = greetingActivityGroups[currentActivityGroup] || [];
+      const activity = activities[currentActivityIndex] || activities[0];
+      if (!activity) {
+        show("topic");
+        return;
+      }
+      const title = activityGroupTitle(currentActivityGroup);
+      const intro = activityIntro(activity, currentActivityGroup);
+      if (currentActivityGroup === "reading") {
+        renderReadingActivity(activity, title, intro, activities.length);
+        return;
+      }
+      document.getElementById("activityPlayer").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">${title} ${currentActivityIndex + 1} of ${activities.length}</span>
+              <h2>${escapeHtml(activity.title)}</h2>
+              <p class="subtitle">${escapeHtml(activity.support || "Answer the question. You can listen, use a button, speak, or record your voice.")}</p>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="ai-line">${escapeHtml(intro)}</div>
+          <p class="subtitle" style="font-size: 22px; font-weight: 900;">${escapeHtml(activitySpanishHelp(currentActivityGroup))}</p>
+          <div class="question">${escapeHtml(personalize(activity.prompt))}</div>
+          <div class="row">
+            <button class="btn small secondary" id="activityListen">Listen</button>
+            <button class="btn small secondary" id="activityVoice">Voice answer</button>
+          </div>
+          ${renderVoiceRecorderControls("activityRecorder")}
+          <div class="choices" id="activityChoices">
+            ${(activity.options || []).map(option => renderActivityOption(option)).join("")}
+          </div>
+          <div class="feedback" id="activityFeedback"></div>
+          ${renderScanControls()}
+          <div class="grid two">
+            <button class="btn secondary" data-go="activityMenu">Back to list</button>
+            <button class="btn green" id="nextActivity">Next activity</button>
+          </div>
+        </div>
+      `;
+      currentChoices = Array.from(document.querySelectorAll("#activityChoices .choice"));
+      currentChoiceHandler = (value, button) => answerGreetingActivity(value, personalize(activity.answer || ""), button);
+      currentChoices.forEach(button => button.addEventListener("click", () => currentChoiceHandler(button.dataset.answer, button)));
+      document.getElementById("activityListen").addEventListener("click", () => speakEnglish(getActivityAudio(activity)));
+      document.getElementById("activityVoice").addEventListener("click", () => listenForVoice(value => answerGreetingActivity(value, personalize(activity.answer || "")), "activityFeedback"));
+      document.getElementById("nextActivity").addEventListener("click", () => {
+        currentActivityIndex = (currentActivityIndex + 1) % activities.length;
+        renderActivityPlayer();
+      });
+      attachVoiceRecorder("activityRecorder");
+      attachScanButtons();
+      setAssistantMessage(intro, "Vamos a practicar juntos. Estoy contigo.");
+      speakEnglish(`${intro} ${getActivityAudio(activity)}`);
+      if (settings.autoScan) startScan();
+    }
+
+    function getActivityAudio(activity) {
+      if (activity.say) return personalize(activity.say);
+      const prompt = personalize(activity.prompt || "");
+      const answer = personalize(activity.answer || "");
+      if (answer && /_{2,}/.test(prompt)) {
+        return prompt.replace(/_{2,}/g, answer).replace(/\s+/g, " ").trim();
+      }
+      return prompt;
+    }
+
+    function renderReadingActivity(activity, title, intro, totalActivities) {
+      const isSentence = activity.type === "sentence";
+      document.getElementById("activityPlayer").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">${title} ${currentActivityIndex + 1} of ${totalActivities}</span>
+              <h2>${escapeHtml(activity.title)}</h2>
+              <p class="subtitle">Read first. Then answer or build the sentence.</p>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="ai-line">${escapeHtml(intro)}</div>
+          <p class="subtitle" style="font-size: 22px; font-weight: 900;">Apoyo: primero lee el texto. Luego responde o arma la oracion con las palabras correctas.</p>
+          ${activity.passage ? `<div class="reading-card">${escapeHtml(personalize(activity.passage))}</div>` : ""}
+          <div class="question">${escapeHtml(personalize(activity.prompt))}</div>
+          <div class="row">
+            <button class="btn small secondary" id="activityListen">Listen</button>
+          </div>
+          ${isSentence ? renderSentenceBuilder(activity) : `
+            <div class="choices" id="activityChoices">
+              ${(activity.options || []).map(option => renderActivityOption(option)).join("")}
+            </div>
+          `}
+          <div class="feedback" id="activityFeedback"></div>
+          ${!isSentence ? renderScanControls() : ""}
+          <div class="grid two">
+            <button class="btn secondary" data-go="activityMenu">Back to list</button>
+            <button class="btn green" id="nextActivity">Next activity</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("activityListen").addEventListener("click", () => speakEnglish(getReadingAudio(activity)));
+      document.getElementById("nextActivity").addEventListener("click", () => {
+        const activities = greetingActivityGroups[currentActivityGroup] || [];
+        currentActivityIndex = (currentActivityIndex + 1) % activities.length;
+        renderActivityPlayer();
+      });
+
+      if (isSentence) {
+        attachSentenceBuilder(activity);
+      } else {
+        currentChoices = Array.from(document.querySelectorAll("#activityChoices .choice"));
+        currentChoiceHandler = (value, button) => answerGreetingActivity(value, personalize(activity.answer || ""), button);
+        currentChoices.forEach(button => button.addEventListener("click", () => currentChoiceHandler(button.dataset.answer, button)));
+        attachScanButtons();
+        if (settings.autoScan) startScan();
+      }
+
+      setAssistantMessage(intro, "Lee primero. Despues responde con calma.");
+      speakEnglish(`${intro} ${getReadingAudio(activity)}`);
+    }
+
+    function getReadingAudio(activity) {
+      if (activity.passage) return personalize(`${activity.passage} ${activity.prompt || ""}`);
+      if (activity.answerWords) return personalize(activity.answerWords.join(" "));
+      return getActivityAudio(activity);
+    }
+
+    function renderSentenceBuilder(activity) {
+      return `
+        <div class="sentence-builder" id="sentenceBuilder">
+          <div class="sentence-slots" id="sentenceSlots">
+            ${activity.answerWords.map((word, index) => `<div class="sentence-slot" data-slot="${index}">?</div>`).join("")}
+          </div>
+          <div class="word-bank" id="wordBank">
+            ${activity.words.map(word => `<button class="word-chip" data-word="${escapeAttr(personalize(word))}">${escapeHtml(personalize(word))}</button>`).join("")}
+          </div>
+          <div class="row">
+            <button class="btn small secondary" id="clearSentence">Clear</button>
+            <button class="btn small green" id="checkSentence">Check sentence</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachSentenceBuilder(activity) {
+      const slots = Array.from(document.querySelectorAll("#sentenceSlots .sentence-slot"));
+      const chips = Array.from(document.querySelectorAll("#wordBank .word-chip"));
+      const selected = [];
+
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          if (selected.length >= slots.length) return;
+          selected.push(chip.dataset.word);
+          slots[selected.length - 1].textContent = chip.dataset.word;
+          chip.classList.add("used");
+          speakEnglish(chip.dataset.word);
+        });
+      });
+
+      document.getElementById("clearSentence").addEventListener("click", () => {
+        selected.splice(0, selected.length);
+        slots.forEach(slot => { slot.textContent = "?"; slot.classList.remove("correct-choice", "incorrect-choice"); });
+        chips.forEach(chip => chip.classList.remove("used"));
+        document.getElementById("activityFeedback").textContent = "";
+      });
+
+      document.getElementById("checkSentence").addEventListener("click", () => {
+        const expected = activity.answerWords.map(personalize);
+        const ok = selected.length === expected.length && selected.every((word, index) => isMatch(word, expected[index]));
+        slots.forEach(slot => slot.classList.add(ok ? "correct-choice" : "incorrect-choice"));
+        if (ok) {
+          addUnique(progress.greetingActivityDone, activity.id);
+          awardStars(1, "activity", activity.id);
+          save(STORE_KEYS.progress, progress);
+          const msg = `${randomPersonal(positive)} ${completionComment()}`;
+          document.getElementById("activityFeedback").textContent = msg;
+          speakEnglish(msg);
+        } else {
+          const msg = "Try again, you can do it.";
+          document.getElementById("activityFeedback").textContent = msg;
+          speakEnglish(msg);
+        }
+      });
+    }
+
+    function answerGreetingActivity(value, answer, selectedButton) {
+      const feedback = document.getElementById("activityFeedback");
+      const isOpenSpeaking = !answer;
+      if (isOpenSpeaking || isMatch(value, answer)) {
+        markChoiceFeedback(selectedButton, true);
+        const activities = greetingActivityGroups[currentActivityGroup] || [];
+        const activity = activities[currentActivityIndex];
+        if (activity) {
+          addUnique(progress.greetingActivityDone, activity.id);
+          awardStars(1, "activity", activity.id);
+        }
+        save(STORE_KEYS.progress, progress);
+        const msg = `${randomPersonal(positive)} ${completionComment()}`;
+        feedback.textContent = msg;
+        speakEnglish(msg);
+      } else {
+        markChoiceFeedback(selectedButton, false);
+        const msg = "Try again, you can do it.";
+        feedback.textContent = msg;
+        speakEnglish(msg);
+      }
+    }
+
+    function renderActivityOption(option) {
+      const value = personalize(option);
+      const visual = isVisualToken(value);
+      return `<button class="choice ${visual ? "visual-choice" : ""}" data-answer="${escapeAttr(value)}">${visual ? `${value}<span class="visual-label">${escapeHtml(visualLabel(value))}</span>` : escapeHtml(value)}</button>`;
+    }
+
+    function markChoiceFeedback(button, correct) {
+      if (!button) return;
+      const group = button.closest(".choices");
+      if (group) {
+        group.querySelectorAll(".choice").forEach(choice => {
+          choice.classList.remove("incorrect-choice", "correct-choice");
+        });
+      }
+      button.classList.add(correct ? "correct-choice" : "incorrect-choice");
+    }
+
+    function isVisualToken(value) {
+      return /^&#\d+;$/.test(String(value || "").trim());
+    }
+
+    function visualLabel(value) {
+      const labels = {
+        "&#128075;": "Hello",
+        "&#127769;": "Night",
+        "&#9728;": "Morning",
+        "&#128522;": "Happy",
+        "&#128546;": "Sad"
+      };
+      return labels[String(value || "").trim()] || "Picture";
+    }
+
+    function renderWatch() {
+      document.getElementById("watch").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Topic 1 - Greetings</span>
+            <h2>Watch & Learn</h2>
+          </div>
+          <div class="video-wrap">
+            <iframe width="560" height="315" src="${escapeAttr(content.videoUrl)}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <p class="subtitle" style="font-size: 20px; font-weight: 800;">If the video does not appear inside the app, open it with the button below. Some browsers block YouTube iframes from local files.</p>
+          <a class="btn secondary" href="https://www.youtube.com/watch?v=2o46gKeQTwc" target="_blank" rel="noopener">Open video</a>
+          <div class="grid three">
+            <button class="btn" id="watchInstruction">Play instruction</button>
+            <button class="btn green" data-go="learn">Practice now</button>
+            <button class="btn secondary" data-go="topic">Back to topic</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("watchInstruction").addEventListener("click", () => {
+        speakAssistant("Lizeth, let's watch and learn greetings.", "Lizeth, vamos a mirar y aprender saludos en ingles.");
+      });
+      speakAssistant("Lizeth, let's watch and learn greetings.", "Lizeth, vamos a mirar y aprender saludos en ingles.");
+    }
+
+    function renderLearn() {
+      const item = content.greetings[learnIndex] || content.greetings[0];
+      document.getElementById("learn").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Learn Greetings</span>
+              <h2>Greeting ${learnIndex + 1} of ${content.greetings.length}</h2>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="panel learn-card">
+            <div class="phrase">${escapeHtml(item.en)}</div>
+            <div class="translation">${escapeHtml(item.es)}</div>
+          </div>
+          <div class="grid three">
+            <button class="btn" id="listenGreeting">Listen</button>
+            <button class="btn lila" id="repeatGreeting">Repeat</button>
+            <button class="btn green" id="nextGreeting">Next</button>
+          </div>
+          <button class="btn secondary" data-go="topic">Back to topic</button>
+        </div>
+      `;
+      document.getElementById("listenGreeting").addEventListener("click", () => speakEnglish(item.en));
+      document.getElementById("repeatGreeting").addEventListener("click", () => speakAssistant(item.en, item.es));
+      document.getElementById("nextGreeting").addEventListener("click", () => {
+        addUnique(progress.greetingsSeen, item.en);
+        learnIndex = (learnIndex + 1) % content.greetings.length;
+        save(STORE_KEYS.progress, progress);
+        renderLearn();
+      });
+      speakEnglish(item.en);
+    }
+
+    function renderPractice() {
+      const question = content.practiceQuestions[practiceIndex] || content.practiceQuestions[0];
+      const done = progress.practicesDone.includes(practiceIndex);
+      const intro = `Quick greeting challenge, ${studentName()}. Let's try this together.`;
+      document.getElementById("practice").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Practice Greetings</span>
+              <h2>Question ${practiceIndex + 1} of ${content.practiceQuestions.length}</h2>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="ai-line">${escapeHtml(intro)}</div>
+          <div class="question">${escapeHtml(question.q)}</div>
+          <div class="row">
+            <button class="btn small secondary" id="repeatPractice">Repeat question</button>
+            <button class="btn small secondary" id="voicePractice">Voice answer</button>
+          </div>
+          ${renderVoiceRecorderControls("practiceRecorder")}
+          <div class="choices" id="practiceChoices">
+            ${question.options.map(option => `<button class="choice" data-answer="${escapeAttr(option)}">${escapeHtml(option)}</button>`).join("")}
+          </div>
+          <div class="feedback" id="practiceFeedback">${done ? "Completed. Great job!" : ""}</div>
+          ${renderScanControls()}
+          <div class="grid two">
+            <button class="btn secondary" data-go="topic">Back to topic</button>
+            <button class="btn green" id="nextPractice">Next question</button>
+          </div>
+        </div>
+      `;
+      currentChoices = Array.from(document.querySelectorAll("#practiceChoices .choice"));
+      currentChoiceHandler = (value, button) => answerPractice(value, question.answer, button);
+      currentChoices.forEach(btn => btn.addEventListener("click", () => currentChoiceHandler(btn.dataset.answer, btn)));
+      document.getElementById("repeatPractice").addEventListener("click", () => speakEnglish(question.q));
+      document.getElementById("voicePractice").addEventListener("click", () => listenForVoice(value => answerPractice(value, question.answer), "practiceFeedback"));
+      attachVoiceRecorder("practiceRecorder");
+      document.getElementById("nextPractice").addEventListener("click", () => {
+        practiceIndex = (practiceIndex + 1) % content.practiceQuestions.length;
+        renderPractice();
+      });
+      attachScanButtons();
+      setAssistantMessage(intro, "Reto rapido de saludos. Hagamoslo juntos.");
+      speakEnglish(`${intro} ${question.q}`);
+      if (settings.autoScan) startScan();
+    }
+
+    function answerPractice(value, answer, selectedButton) {
+      const feedback = document.getElementById("practiceFeedback");
+      if (isMatch(value, answer)) {
+        markChoiceFeedback(selectedButton, true);
+        addUnique(progress.practicesDone, practiceIndex);
+        awardStars(1, "activity", `quick-${practiceIndex}`);
+        save(STORE_KEYS.progress, progress);
+        const msg = `${randomPersonal(positive)} ${completionComment()}`;
+        feedback.textContent = msg;
+        speakEnglish(msg);
+        setTimeout(() => {
+          practiceIndex = (practiceIndex + 1) % content.practiceQuestions.length;
+          renderPractice();
+        }, 1400);
+      } else {
+        markChoiceFeedback(selectedButton, false);
+        const msg = "Try again, you can do it.";
+        feedback.textContent = msg;
+        speakEnglish(msg);
+      }
+    }
+
+    function renderConversationMenu() {
+      document.getElementById("conversationMenu").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Bonus Missions</span>
+              <h2>Conversation Missions</h2>
+              <p class="subtitle">Choose one mission. Each mission has small conversation turns.</p>
+            </div>
+            ${renderProgressLine()}
+          </div>
+          <div class="grid two">
+            ${conversations.map((conv, index) => `
+              <button class="conversation-card ${progress.conversationsCompleted.includes(conv.id) ? "completed-card" : ""}" data-conv="${index}" ${progress.conversationsCompleted.includes(conv.id) ? "disabled aria-disabled='true'" : ""}>
+                <span class="scene-emoji" style="font-size: 60px;">${conv.scene}</span>
+                <h3>${escapeHtml(conv.title)}</h3>
+                <p class="subtitle">${escapeHtml(personalize(conv.context))}</p>
+                <span class="badge">${progress.conversationsCompleted.includes(conv.id) ? "Completed" : "Ready"}</span>
+              </button>
+            `).join("")}
+          </div>
+          <button class="btn secondary" data-go="topic">Back to topic</button>
+        </div>
+      `;
+      document.querySelectorAll("[data-conv]").forEach(btn => {
+        btn.addEventListener("click", () => startConversation(Number(btn.dataset.conv)));
+      });
+    }
+
+    function startConversation(index) {
+      currentConversation = conversations[index];
+      if (progress.conversationsCompleted.includes(currentConversation.id)) {
+        setAssistantMessage("This mission is already completed.", "Esta mision ya esta completada. Puedes elegir otra.");
+        return;
+      }
+      conversationTurn = 0;
+      renderConversation();
+      show("conversation");
+      setAssistantMessage(`Mission: ${currentConversation.title}. Let's practice together, ${studentName()}.`, "Mision de conversacion. Practiquemos juntos.");
+    }
+
+    function renderConversation() {
+      if (!currentConversation) currentConversation = conversations[0];
+      const turn = currentConversation.turns[conversationTurn];
+      const complete = conversationTurn >= currentConversation.turns.length;
+      document.getElementById("conversation").innerHTML = complete ? renderConversationComplete() : `
+        <div class="panel conversation-layout">
+          <div class="panel scene">
+            <div>
+              <div class="scene-emoji">${currentConversation.scene}</div>
+              <h2>${escapeHtml(currentConversation.title)}</h2>
+              <p class="subtitle" style="font-size: 22px; font-weight: 800;">${escapeHtml(personalize(currentConversation.context))}</p>
+            </div>
+          </div>
+          <div class="stack">
+            <span class="badge">Turn ${conversationTurn + 1} of ${currentConversation.turns.length}</span>
+            <div class="ai-line">${escapeHtml(personalize(turn.ai))}</div>
+            <p class="subtitle" style="font-size: 22px; font-weight: 900;">Apoyo: escucha a la IA y elige una respuesta corta en ingles. Puedes repetir y grabarte.</p>
+            <div class="row">
+              <button class="btn small secondary" id="repeatConversation">Repeat</button>
+              <button class="btn small secondary" id="voiceConversation">Voice answer</button>
+            </div>
+            ${renderVoiceRecorderControls("conversationRecorder")}
+            <div class="choices" id="conversationChoices">
+              ${getConversationOptions(turn).map(answer => `<button class="choice" data-answer="${escapeAttr(answer)}">${escapeHtml(answer)}</button>`).join("")}
+            </div>
+            <div class="feedback" id="conversationFeedback"></div>
+            ${renderScanControls()}
+            <button class="btn secondary" data-go="conversationMenu">Back to conversations</button>
+          </div>
+        </div>
+      `;
+      if (complete) {
+        addUnique(progress.conversationsCompleted, currentConversation.id);
+        awardStars(3, "mission", currentConversation.id);
+        save(STORE_KEYS.progress, progress);
+        speakEnglish(`You completed this conversation, ${studentName()}! Great job! ${sessionSummaryText()}`);
+        return;
+      }
+      currentChoices = Array.from(document.querySelectorAll("#conversationChoices .choice"));
+      currentChoiceHandler = (value, button) => answerConversation(value, getConversationExpected(turn), button);
+      currentChoices.forEach(btn => btn.addEventListener("click", () => currentChoiceHandler(btn.dataset.answer, btn)));
+      document.getElementById("repeatConversation").addEventListener("click", () => speakEnglish(personalize(turn.ai)));
+      document.getElementById("voiceConversation").addEventListener("click", () => listenForVoice(value => answerConversation(value, getConversationExpected(turn)), "conversationFeedback"));
+      attachVoiceRecorder("conversationRecorder");
+      attachScanButtons();
+      speakEnglish(personalize(turn.ai));
+      if (settings.autoScan) startScan();
+    }
+
+    function answerConversation(value, validAnswers, selectedButton) {
+      const feedback = document.getElementById("conversationFeedback");
+      const ok = validAnswers.some(answer => isMatch(value, answer));
+      if (ok) {
+        markChoiceFeedback(selectedButton, true);
+        const msg = randomPersonal(positive);
+        feedback.textContent = msg;
+        speakEnglish(msg);
+        conversationTurn += 1;
+        setTimeout(renderConversation, 1200);
+      } else {
+        markChoiceFeedback(selectedButton, false);
+        const msg = "Try again, you can do it.";
+        feedback.textContent = msg;
+        speakEnglish(msg);
+      }
+    }
+
+    function getConversationExpected(turn) {
+      return [turn.answer || (turn.answers && turn.answers[0]) || ""].filter(Boolean);
+    }
+
+    function getConversationOptions(turn) {
+      if (turn.options && turn.options.length) return turn.options.map(personalize);
+      const expected = personalize(getConversationExpected(turn)[0] || "");
+      const distractors = [
+        "Good night.",
+        "Good morning.",
+        "Goodbye.",
+        "Hello.",
+        "I am fine.",
+        "Thank you.",
+        "No.",
+        "Yes.",
+        "See you.",
+        "I am sad.",
+        "I am happy."
+      ].filter(option => !isMatch(option, expected));
+      const selected = [expected];
+      for (const option of distractors) {
+        if (selected.length >= 3) break;
+        if (!selected.some(existing => isMatch(existing, option))) selected.push(option);
+      }
+      return stableShuffle(selected, expected);
+    }
+
+    function stableShuffle(options, seed) {
+      const copy = [...options];
+      let value = 0;
+      String(seed || "").split("").forEach(char => { value += char.charCodeAt(0); });
+      for (let index = copy.length - 1; index > 0; index--) {
+        const swapIndex = value % (index + 1);
+        const temp = copy[index];
+        copy[index] = copy[swapIndex];
+        copy[swapIndex] = temp;
+        value = Math.floor(value / 2) + 7;
+      }
+      return copy;
+    }
+
+    function renderConversationComplete() {
+      return `
+        <div class="panel stack" style="text-align:center;">
+          <div class="stars">&#11088; &#11088; &#11088;</div>
+          <h2>You completed this conversation, ${escapeHtml(studentName())}!</h2>
+          <p class="welcome">Great job!</p>
+          <p class="subtitle" style="font-size: 22px; font-weight: 800;">${escapeHtml(sessionSummaryText())}</p>
+          <div class="grid two">
+            <button class="btn green" data-go="conversationMenu">Back to missions</button>
+            <button class="btn secondary" data-go="review">Review progress</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReview() {
+      const pct = progressPercent();
+      const complete = greetingsTopicComplete();
+      document.getElementById("review").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Review</span>
+            <h2>Great job, ${escapeHtml(studentName())}!</h2>
+            <p class="subtitle">This is your learning progress.</p>
+          </div>
+          ${renderProgressLine()}
+          ${complete ? `
+            <div class="certificate">
+              <div class="stars">&#11088; &#11088; &#11088; &#11088; &#11088;</div>
+              <div class="certificate-title">Congratulations, ${escapeHtml(studentName())}!</div>
+              <p class="welcome">You completed the Greetings Topic.</p>
+              <p class="subtitle" style="font-size: 22px; font-weight: 800;">Certificate of Completion - Greetings</p>
+            </div>
+          ` : ""}
+          <div class="grid three">
+            <div class="topic-card"><h3>Greetings seen</h3><p class="welcome">${progress.greetingsSeen.length}/${content.greetings.length}</p></div>
+            <div class="topic-card"><h3>Practice done</h3><p class="welcome">${progress.practicesDone.length}/${content.practiceQuestions.length}</p></div>
+            <div class="topic-card"><h3>Conversations</h3><p class="welcome">${progress.conversationsCompleted.length}/${conversations.length}</p></div>
+            <div class="topic-card"><h3>Activities</h3><p class="welcome">${progress.greetingActivityDone.length}/${Object.values(greetingActivityGroups).flat().length}</p></div>
+          </div>
+          <div class="stars">${pct >= 75 ? "&#11088; &#11088; &#11088;" : pct >= 35 ? "&#11088; &#11088;" : "&#11088;"}</div>
+          <div class="grid two">
+            <button class="btn" data-go="learn">Review greetings</button>
+            <button class="btn green" data-go="conversationMenu">Practice conversations</button>
+            <button class="btn secondary" data-go="topic">Back to topic</button>
+          </div>
+        </div>
+      `;
+      if (complete) {
+        setAssistantMessage(`Congratulations, ${studentName()}! You completed the Greetings Topic.`, "Felicitaciones. Completaste el tema de saludos.");
+      }
+    }
+
+    function renderColorsTopic() {
+      document.getElementById("colorsTopic").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Topic 2</span>
+              <h2>Colors</h2>
+              <p class="subtitle">Learn colors with big choices, soft visuals, and no time limit.</p>
+            </div>
+            ${renderColorsProgressLine()}
+          </div>
+          <div class="color-gallery" aria-label="Color preview">
+            ${content.colors.slice(0, 6).map(color => `
+              <div class="mini-swatch" style="background:${escapeAttr(color.hex)}; border-color:${escapeAttr(color.border || color.hex)}"></div>
+            `).join("")}
+          </div>
+          <div class="grid two">
+            <button class="btn green" data-go="colorsLearn">Learn Colors</button>
+            <button class="btn lila" data-go="colorsPractice">Practice Colors</button>
+            <button class="btn secondary" data-go="colorsReview">Review</button>
+            <button class="btn secondary" data-go="topics">Back to topics</button>
+          </div>
+        </div>
+      `;
+      speakAssistant("Lizeth, let's learn colors.", "Lizeth, vamos a aprender colores en ingles.");
+    }
+
+    function renderColorsLearn() {
+      const item = content.colors[colorLearnIndex] || content.colors[0];
+      document.getElementById("colorsLearn").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Learn Colors</span>
+              <h2>Color ${colorLearnIndex + 1} of ${content.colors.length}</h2>
+            </div>
+            ${renderColorsProgressLine()}
+          </div>
+          <div class="panel learn-card color-learn-card">
+            <div class="color-sample" style="background:${escapeAttr(item.hex)}; border-color:${escapeAttr(item.border || item.hex)}"></div>
+            <div class="phrase">${escapeHtml(item.en)}</div>
+            <div class="translation">${escapeHtml(item.es)}</div>
+          </div>
+          <div class="grid three">
+            <button class="btn" id="listenColor">Listen</button>
+            <button class="btn lila" id="repeatColor">Repeat</button>
+            <button class="btn green" id="nextColor">Next</button>
+          </div>
+          <button class="btn secondary" data-go="colorsTopic">Back to Colors</button>
+        </div>
+      `;
+      document.getElementById("listenColor").addEventListener("click", () => speakEnglish(item.en));
+      document.getElementById("repeatColor").addEventListener("click", () => speakAssistant(item.en, item.es));
+      document.getElementById("nextColor").addEventListener("click", () => {
+        addUnique(progress.colorsSeen, item.en);
+        colorLearnIndex = (colorLearnIndex + 1) % content.colors.length;
+        save(STORE_KEYS.progress, progress);
+        renderColorsLearn();
+      });
+      speakEnglish(item.en);
+    }
+
+    function renderColorsPractice() {
+      const question = content.colorQuestions[colorPracticeIndex] || content.colorQuestions[0];
+      const done = progress.colorsPracticesDone.includes(colorPracticeIndex);
+      const intro = `Color challenge, ${studentName()}. Look carefully and choose.`;
+      document.getElementById("colorsPractice").innerHTML = `
+        <div class="panel stack">
+          <div class="activity-head">
+            <div>
+              <span class="badge">Practice Colors</span>
+              <h2>Question ${colorPracticeIndex + 1} of ${content.colorQuestions.length}</h2>
+            </div>
+            ${renderColorsProgressLine()}
+          </div>
+          <div class="ai-line">${escapeHtml(intro)}</div>
+          <div class="question">${escapeHtml(question.q)}</div>
+          <div class="row">
+            <button class="btn small secondary" id="repeatColorQuestion">Repeat question</button>
+            <button class="btn small secondary" id="voiceColorAnswer">Voice answer</button>
+          </div>
+          ${renderVoiceRecorderControls("colorsRecorder")}
+          <div class="choices color-choices" id="colorChoices">
+            ${question.options.map(option => {
+              const color = getColor(option);
+              return `<button class="choice color-choice" data-answer="${escapeAttr(option)}">
+                <span class="choice-swatch" style="background:${escapeAttr(color.hex)}; border-color:${escapeAttr(color.border || color.hex)}"></span>
+                <span>${escapeHtml(option)}</span>
+              </button>`;
+            }).join("")}
+          </div>
+          <div class="feedback" id="colorsFeedback">${done ? "Completed. Great job!" : ""}</div>
+          ${renderScanControls()}
+          <div class="grid two">
+            <button class="btn secondary" data-go="colorsTopic">Back to Colors</button>
+            <button class="btn green" id="nextColorQuestion">Next question</button>
+          </div>
+        </div>
+      `;
+      currentChoices = Array.from(document.querySelectorAll("#colorChoices .choice"));
+      currentChoiceHandler = (value, button) => answerColorsPractice(value, question.answer, button);
+      currentChoices.forEach(btn => btn.addEventListener("click", () => currentChoiceHandler(btn.dataset.answer, btn)));
+      document.getElementById("repeatColorQuestion").addEventListener("click", () => speakEnglish(question.q));
+      document.getElementById("voiceColorAnswer").addEventListener("click", () => listenForVoice(value => answerColorsPractice(value, question.answer), "colorsFeedback"));
+      attachVoiceRecorder("colorsRecorder");
+      document.getElementById("nextColorQuestion").addEventListener("click", () => {
+        colorPracticeIndex = (colorPracticeIndex + 1) % content.colorQuestions.length;
+        renderColorsPractice();
+      });
+      attachScanButtons();
+      setAssistantMessage(intro, "Reto de colores. Mira con calma y elige.");
+      speakEnglish(`${intro} ${question.q}`);
+      if (settings.autoScan) startScan();
+    }
+
+    function answerColorsPractice(value, answer, selectedButton) {
+      const feedback = document.getElementById("colorsFeedback");
+      if (isMatch(value, answer)) {
+        markChoiceFeedback(selectedButton, true);
+        addUnique(progress.colorsPracticesDone, colorPracticeIndex);
+        awardStars(1, "activity", `colors-${colorPracticeIndex}`);
+        save(STORE_KEYS.progress, progress);
+        const msg = randomPersonal(positive);
+        feedback.textContent = msg;
+        speakEnglish(msg);
+        setTimeout(() => {
+          colorPracticeIndex = (colorPracticeIndex + 1) % content.colorQuestions.length;
+          renderColorsPractice();
+        }, 1400);
+      } else {
+        markChoiceFeedback(selectedButton, false);
+        const msg = "Try again, you can do it.";
+        feedback.textContent = msg;
+        speakEnglish(msg);
+      }
+    }
+
+    function renderColorsReview() {
+      const pct = colorsProgressPercent();
+      document.getElementById("colorsReview").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Colors Review</span>
+            <h2>Beautiful work, Lizeth!</h2>
+            <p class="subtitle">Here is your Colors progress.</p>
+          </div>
+          ${renderColorsProgressLine()}
+          <div class="grid two">
+            <div class="topic-card"><h3>Colors seen</h3><p class="welcome">${progress.colorsSeen.length}/${content.colors.length}</p></div>
+            <div class="topic-card"><h3>Practice done</h3><p class="welcome">${progress.colorsPracticesDone.length}/${content.colorQuestions.length}</p></div>
+          </div>
+          <div class="color-gallery">
+            ${content.colors.map(color => `
+              <div class="mini-swatch" title="${escapeAttr(color.en)}" style="background:${escapeAttr(color.hex)}; border-color:${escapeAttr(color.border || color.hex)}"></div>
+            `).join("")}
+          </div>
+          <div class="stars">${pct >= 80 ? "&#11088; &#11088; &#11088;" : pct >= 40 ? "&#11088; &#11088;" : "&#11088;"}</div>
+          <div class="grid two">
+            <button class="btn" data-go="colorsLearn">Review colors</button>
+            <button class="btn green" data-go="colorsPractice">Practice again</button>
+            <button class="btn secondary" data-go="colorsTopic">Back to Colors</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function getColor(name) {
+      return content.colors.find(color => normalize(color.en) === normalize(name)) || { en: name, hex: "#ffffff", border: "#c8c8d0" };
+    }
+
+    function renderVoiceRecorderControls(id) {
+      return `
+        <div class="voice-recorder" id="${id}">
+          <div class="row">
+            <button class="btn small secondary" data-record-start>Record my voice</button>
+            <button class="btn small secondary" data-record-stop disabled>Stop recording</button>
+            <button class="btn small secondary" data-record-play disabled>Play my voice</button>
+          </div>
+          <p class="status" data-record-status>Record, listen, and try again whenever you want.</p>
+        </div>
+      `;
+    }
+
+    function attachVoiceRecorder(id) {
+      const box = document.getElementById(id);
+      if (!box) return;
+      const startBtn = box.querySelector("[data-record-start]");
+      const stopBtn = box.querySelector("[data-record-stop]");
+      const playBtn = box.querySelector("[data-record-play]");
+      const status = box.querySelector("[data-record-status]");
+
+      startBtn.addEventListener("click", async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+          status.textContent = "Recording is not available in this browser. You can still use big buttons.";
+          speakEnglish("Recording is not available in this browser. You can still use big buttons.");
+          return;
+        }
+
+        try {
+          stopCurrentRecording();
+          recorderChunks = [];
+          recorderStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          recorder = new MediaRecorder(recorderStream);
+          recorder.ondataavailable = event => {
+            if (event.data && event.data.size > 0) recorderChunks.push(event.data);
+          };
+          recorder.onstop = () => {
+            const blob = new Blob(recorderChunks, { type: recorder.mimeType || "audio/webm" });
+            if (recordedVoiceUrl) URL.revokeObjectURL(recordedVoiceUrl);
+            recordedVoiceUrl = URL.createObjectURL(blob);
+            playBtn.disabled = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            status.textContent = "Recording ready. You can play your voice.";
+            stopRecorderStream();
+          };
+          recorder.start();
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+          playBtn.disabled = true;
+          status.textContent = "Recording... speak now.";
+        } catch (error) {
+          status.textContent = "Microphone permission is needed to record. You can use big buttons.";
+          speakEnglish("Microphone permission is needed to record. You can use big buttons.");
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      });
+
+      stopBtn.addEventListener("click", () => {
+        if (recorder && recorder.state === "recording") {
+          recorder.stop();
+          status.textContent = "Saving your recording...";
+        }
+      });
+
+      playBtn.addEventListener("click", async () => {
+        if (!recordedVoiceUrl) return;
+        try {
+          if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+          const audio = new Audio(recordedVoiceUrl);
+          status.textContent = "Playing your voice.";
+          await audio.play();
+          audio.onended = () => {
+            status.textContent = "You can record again whenever you want.";
+          };
+        } catch (error) {
+          status.textContent = "I could not play the recording. Try recording again.";
+        }
+      });
+    }
+
+    function stopCurrentRecording() {
+      if (recorder && recorder.state === "recording") recorder.stop();
+      stopRecorderStream();
+    }
+
+    function stopRecorderStream() {
+      if (recorderStream) {
+        recorderStream.getTracks().forEach(track => track.stop());
+        recorderStream = null;
+      }
+    }
+
+    function renderScanControls() {
+      return `
+        <div class="scan-panel">
+          <div class="row">
+            <button class="btn small secondary" id="startScan">Start Scan</button>
+            <button class="btn small secondary" id="pauseScan">Pause Scan</button>
+            <button class="btn small yellow" data-go="accessibility">Accessibility Settings</button>
+          </div>
+          <button class="btn yellow select-highlight" id="selectHighlighted">Select highlighted option</button>
+        </div>
+      `;
+    }
+
+    function attachScanButtons() {
+      const start = document.getElementById("startScan");
+      const pause = document.getElementById("pauseScan");
+      const select = document.getElementById("selectHighlighted");
+      if (start) start.addEventListener("click", startScan);
+      if (pause) pause.addEventListener("click", stopScan);
+      if (select) select.addEventListener("click", selectHighlighted);
+    }
+
+    function scanDelay() {
+      if (settings.scanSpeed === "slow") return 4500;
+      if (settings.scanSpeed === "fast") return 1800;
+      return 3000;
+    }
+
+    function startScan() {
+      if (!currentChoices.length) return;
+      stopScan();
+      scanIndex = -1;
+      advanceScan();
+      scanTimer = setInterval(advanceScan, scanDelay());
+    }
+
+    function advanceScan() {
+      currentChoices.forEach(btn => btn.classList.remove("scan-highlight"));
+      scanIndex = (scanIndex + 1) % currentChoices.length;
+      currentChoices[scanIndex].classList.add("scan-highlight");
+      speakEnglish(currentChoices[scanIndex].dataset.answer || currentChoices[scanIndex].textContent);
+    }
+
+    function stopScan() {
+      if (scanTimer) clearInterval(scanTimer);
+      scanTimer = null;
+      currentChoices.forEach(btn => btn.classList.remove("scan-highlight"));
+    }
+
+    function selectHighlighted() {
+      if (!currentChoices.length || scanIndex < 0 || !currentChoiceHandler) return;
+      const selected = currentChoices[scanIndex];
+      currentChoiceHandler(selected.dataset.answer || selected.textContent, selected);
+    }
+
+    function renderAccessibility() {
+      refreshVoices();
+      const englishVoices = availableVoices.filter(voice => voice.lang.toLowerCase().startsWith("en"));
+      const spanishVoices = availableVoices.filter(voice => voice.lang.toLowerCase().startsWith("es"));
+      const englishChoice = settings.englishVoice || (findVoice("", "en-US") || {}).name || "";
+      const spanishChoice = settings.spanishVoice || (findVoice("", "es-CO") || {}).name || "";
+      const voiceOptions = (voices, selected) => `
+        <option value="">Best available voice</option>
+        ${voices.map(voice => `<option value="${escapeAttr(voice.name)}" ${voice.name === selected ? "selected" : ""}>${escapeHtml(voiceLabel(voice))}</option>`).join("")}
+      `;
+      document.getElementById("accessibility").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Accessibility Settings</span>
+            <h2>Comfort settings</h2>
+            <p class="subtitle">These settings are saved on this device.</p>
+          </div>
+          <div class="settings-grid">
+            <label class="switch-row">Auto Scan <input type="checkbox" id="setAutoScan" ${settings.autoScan ? "checked" : ""}></label>
+            <label class="switch-row">Automatic voice <input type="checkbox" id="setAutoVoice" ${settings.autoVoice ? "checked" : ""}></label>
+            <label>Scan speed
+              <select id="setScanSpeed">
+                <option value="slow" ${settings.scanSpeed === "slow" ? "selected" : ""}>Slow</option>
+                <option value="medium" ${settings.scanSpeed === "medium" ? "selected" : ""}>Medium</option>
+                <option value="fast" ${settings.scanSpeed === "fast" ? "selected" : ""}>Fast</option>
+              </select>
+            </label>
+            <label>Button size
+              <select id="setButtonSize">
+                <option value="large" ${settings.buttonSize === "large" ? "selected" : ""}>Large</option>
+                <option value="extra-large" ${settings.buttonSize === "extra-large" ? "selected" : ""}>Extra large</option>
+              </select>
+            </label>
+            <label>Contrast
+              <select id="setContrast">
+                <option value="normal" ${settings.contrast === "normal" ? "selected" : ""}>Normal</option>
+                <option value="high" ${settings.contrast === "high" ? "selected" : ""}>High contrast</option>
+              </select>
+            </label>
+            <label>Support language
+              <select id="setLanguage">
+                <option value="spanish" selected>Spanish</option>
+              </select>
+            </label>
+            <label>English voice
+              <select id="setEnglishVoice">
+                ${voiceOptions(englishVoices, englishChoice)}
+              </select>
+            </label>
+            <label>Spanish voice
+              <select id="setSpanishVoice">
+                ${voiceOptions(spanishVoices, spanishChoice)}
+              </select>
+            </label>
+            <label>English speed
+              <input type="range" id="setEnglishRate" min="0.55" max="1" step="0.05" value="${Number(settings.englishRate) || 0.7}">
+            </label>
+            <label>Spanish speed
+              <input type="range" id="setSpanishRate" min="0.6" max="1.05" step="0.05" value="${Number(settings.spanishRate) || 0.82}">
+            </label>
+            <label>Voice tone
+              <input type="range" id="setVoicePitch" min="0.85" max="1.15" step="0.05" value="${Number(settings.voicePitch) || 1}">
+            </label>
+          </div>
+          <div class="grid three">
+            <button class="btn lila" id="testVoice">Test voice</button>
+            <button class="btn green" id="saveSettings">Save settings</button>
+            <button class="btn secondary" data-go="home">Back home</button>
+          </div>
+          <p class="status" id="settingsStatus"></p>
+        </div>
+      `;
+      document.getElementById("testVoice").addEventListener("click", () => {
+        previewVoiceSettings();
+      });
+      document.getElementById("saveSettings").addEventListener("click", () => {
+        settings = {
+          autoScan: document.getElementById("setAutoScan").checked,
+          autoVoice: document.getElementById("setAutoVoice").checked,
+          recordedVoice: false,
+          scanSpeed: document.getElementById("setScanSpeed").value,
+          buttonSize: document.getElementById("setButtonSize").value,
+          contrast: document.getElementById("setContrast").value,
+          supportLanguage: "spanish",
+          englishVoice: document.getElementById("setEnglishVoice").value,
+          spanishVoice: document.getElementById("setSpanishVoice").value,
+          englishRate: Number(document.getElementById("setEnglishRate").value),
+          spanishRate: Number(document.getElementById("setSpanishRate").value),
+          voicePitch: Number(document.getElementById("setVoicePitch").value)
+        };
+        save(STORE_KEYS.settings, settings);
+        applySettings();
+        document.getElementById("settingsStatus").textContent = "Settings saved.";
+        speakEnglish("Settings saved.");
+      });
+    }
+
+    function previewVoiceSettings() {
+      const previous = { ...settings };
+      settings = {
+        ...settings,
+        autoVoice: true,
+        recordedVoice: false,
+        englishVoice: document.getElementById("setEnglishVoice").value,
+        spanishVoice: document.getElementById("setSpanishVoice").value,
+        englishRate: Number(document.getElementById("setEnglishRate").value),
+        spanishRate: Number(document.getElementById("setSpanishRate").value),
+        voicePitch: Number(document.getElementById("setVoicePitch").value)
+      };
+      document.getElementById("settingsStatus").textContent = "Testing voice...";
+      speakAssistant(`Hello ${studentName()}. I am your English friend.`, `Hola ${studentName()}. Estoy lista para aprender contigo.`);
+      settings = previous;
+    }
+
+    function setupVoiceLoading() {
+      if (!("speechSynthesis" in window)) return;
+      refreshVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        refreshVoices();
+        if (document.getElementById("accessibility").classList.contains("active")) {
+          renderAccessibility();
+        }
+      };
+      setTimeout(refreshVoices, 500);
+      setTimeout(refreshVoices, 1200);
+    }
+
+    function renderTeacher() {
+      const first = content.practiceQuestions[0];
+      document.getElementById("teacher").innerHTML = `
+        <div class="panel stack">
+          <div>
+            <span class="badge">Teacher Mode</span>
+            <h2>Content and progress</h2>
+            <p class="subtitle">Changes are saved on this device.</p>
+          </div>
+          <label>Main video link
+            <input id="teacherVideo" value="${escapeAttr(content.videoUrl)}">
+          </label>
+          <div class="grid two">
+            <label>Practice question
+              <textarea id="teacherQuestion">${escapeHtml(first.q)}</textarea>
+            </label>
+            <label>Options, one per line
+              <textarea id="teacherOptions">${escapeHtml(first.options.join("\n"))}</textarea>
+            </label>
+          </div>
+          <label>Correct answer
+            <input id="teacherAnswer" value="${escapeAttr(first.answer)}">
+          </label>
+          <div class="grid two">
+            <label>New greeting in English
+              <input id="newGreetingEn" placeholder="Example: Thank you">
+            </label>
+            <label>Spanish meaning
+              <input id="newGreetingEs" placeholder="Example: Gracias">
+            </label>
+          </div>
+          <div class="grid three">
+            <button class="btn green" id="saveTeacher">Save changes</button>
+            <button class="btn lila" id="addGreeting">Add greeting</button>
+            <button class="btn yellow" id="resetProgress">Reset progress</button>
+          </div>
+          <p class="status" id="teacherStatus"></p>
+          <button class="btn secondary" data-go="home">Back home</button>
+        </div>
+      `;
+      document.getElementById("saveTeacher").addEventListener("click", () => {
+        const options = document.getElementById("teacherOptions").value.split("\n").map(x => x.trim()).filter(Boolean);
+        content.videoUrl = toEmbedUrl(document.getElementById("teacherVideo").value.trim());
+        content.practiceQuestions[0] = {
+          q: document.getElementById("teacherQuestion").value.trim() || first.q,
+          options: options.length ? options : first.options,
+          answer: document.getElementById("teacherAnswer").value.trim() || first.answer
+        };
+        save(STORE_KEYS.content, content);
+        document.getElementById("teacherStatus").textContent = "Changes saved.";
+        speakEnglish("Changes saved.");
+      });
+      document.getElementById("addGreeting").addEventListener("click", () => {
+        const en = document.getElementById("newGreetingEn").value.trim();
+        const es = document.getElementById("newGreetingEs").value.trim();
+        if (!en || !es) {
+          document.getElementById("teacherStatus").textContent = "Please write the greeting and the meaning.";
+          return;
+        }
+        content.greetings.push({ en, es });
+        save(STORE_KEYS.content, content);
+        document.getElementById("teacherStatus").textContent = "Greeting added.";
+        speakEnglish("Greeting added.");
+      });
+      document.getElementById("resetProgress").addEventListener("click", () => {
+        progress = deepCopy(defaultProgress);
+        save(STORE_KEYS.progress, progress);
+        document.getElementById("teacherStatus").textContent = "Progress reset.";
+        speakEnglish("Progress reset.");
+      });
+    }
+
+    function listenForVoice(callback, statusId) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const status = document.getElementById(statusId);
+      if (!SpeechRecognition) {
+        status.textContent = "Voice mode is not available in this browser. You can use big buttons.";
+        speakEnglish("Voice mode is not available in this browser. You can use big buttons.");
+        return;
+      }
+      try {
+        if (recognition) recognition.stop();
+        recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 3;
+        status.textContent = "Listening...";
+        recognition.onresult = event => {
+          const heard = Array.from(event.results[0]).map(result => result.transcript).join(" ");
+          status.textContent = "I heard: " + heard;
+          callback(heard);
+        };
+        recognition.onerror = () => {
+          status.textContent = "That's okay. You can use big buttons.";
+          speakEnglish("That's okay. You can use big buttons.");
+        };
+        recognition.start();
+      } catch (error) {
+        status.textContent = "Voice mode is not available in this browser. You can use big buttons.";
+      }
+    }
+
+    function isMatch(value, expected) {
+      const cleanValue = normalize(decodeHtml(value));
+      const cleanExpected = normalize(decodeHtml(expected));
+      if (cleanValue === cleanExpected) return true;
+      return cleanValue.includes(cleanExpected) || cleanExpected.includes(cleanValue);
+    }
+
+    function decodeHtml(value) {
+      const text = String(value || "");
+      if (!text.includes("&")) return text;
+      const textarea = document.createElement("textarea");
+      textarea.innerHTML = text;
+      return textarea.value;
+    }
+
+    function normalize(text) {
+      return String(text || "")
+        .toLowerCase()
+        .replace(/[.,!?]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function addUnique(list, value) {
+      if (!list.includes(value)) list.push(value);
+    }
+
+    function random(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function randomPersonal(list) {
+      return personalize(random(list));
+    }
+
+    function awardStars(amount, type, id) {
+      if (!id) {
+        sessionMemory.stars += amount;
+        return;
+      }
+      const bucket = type === "mission" ? sessionMemory.completedMissions : sessionMemory.completedActivities;
+      if (!bucket.has(id)) {
+        bucket.add(id);
+        sessionMemory.stars += amount;
+      }
+    }
+
+    function sessionSummaryText() {
+      const activities = sessionMemory.completedActivities.size;
+      const missions = sessionMemory.completedMissions.size;
+      const stars = sessionMemory.stars;
+      const parts = [];
+      if (activities) parts.push(`You completed ${activities} greeting ${activities === 1 ? "activity" : "activities"} today.`);
+      if (missions) parts.push(`You completed ${missions} greeting ${missions === 1 ? "mission" : "missions"} today.`);
+      if (stars) parts.push(`You have earned ${stars} ${stars === 1 ? "star" : "stars"}.`);
+      return parts.join(" ");
+    }
+
+    function activityIntro(activity, group) {
+      const intros = {
+        speaking: [
+          `Hello ${studentName()}! Let's practice greetings together.`,
+          "Mission: Speaking with your English friend.",
+          "Let's say these greetings slowly and clearly.",
+          "Ready for a speaking game?"
+        ],
+        reading: [
+          "Let's play a reading game.",
+          "Mission: Find the greeting.",
+          "Read slowly. I will help you.",
+          "Let's look carefully at the words."
+        ],
+        listening: [
+          "Are you ready for a listening challenge?",
+          "Mission: Listen and choose.",
+          "Listen carefully. No rush.",
+          "Let's hear the English words together."
+        ]
+      };
+      const chosen = random(intros[group] || ["Let's practice together."]);
+      return `${chosen} ${activity.title}.`;
+    }
+
+    function activitySpanishHelp(group) {
+      if (group === "speaking") return "Apoyo: escucha la frase en ingles, intenta decirla y puedes grabarte para escucharte.";
+      if (group === "reading") return "Apoyo: mira las palabras o imagenes con calma y toca la respuesta.";
+      if (group === "listening") return "Apoyo: escucha primero, luego elige lo que escuchaste. Puedes repetir.";
+      return "Apoyo: vamos paso a paso, sin afan.";
+    }
+
+    function completionComment() {
+      const summary = sessionSummaryText();
+      return `${randomPersonal(activityComments)}${summary ? " " + summary : ""}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value).replaceAll("\n", " ");
+    }
+
+    function toEmbedUrl(url) {
+      if (!url) return defaultContent.videoUrl;
+      try {
+        const embeddedId = getYouTubeId(url);
+        if (embeddedId) return "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(embeddedId) + "?rel=0&playsinline=1";
+        const parsed = new URL(url);
+        const id = parsed.searchParams.get("v");
+        if (id) return "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?rel=0&playsinline=1";
+      } catch (error) {}
+      return url;
+    }
+
+    function getYouTubeId(url) {
+      try {
+        const parsed = new URL(url);
+        if (parsed.hostname.includes("youtu.be")) {
+          return parsed.pathname.split("/").filter(Boolean)[0] || "";
+        }
+        if (parsed.pathname.includes("/embed/")) {
+          return parsed.pathname.split("/embed/")[1].split("/")[0] || "";
+        }
+        return parsed.searchParams.get("v") || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function applySettings() {
+      document.body.classList.toggle("high-contrast", settings.contrast === "high");
+      document.body.classList.toggle("extra-large", settings.buttonSize === "extra-large");
+    }
+
+    document.addEventListener("click", event => {
+      const target = event.target.closest("[data-go]");
+      if (target) show(target.dataset.go);
+    });
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      if (!profile.studentName) show("profile");
+      else show("topic");
+    });
+    document.getElementById("continueBtn").addEventListener("click", () => {
+      if (!profile.studentName) show("profile");
+      else show(progress.lastModule || "topic");
+    });
+    document.getElementById("assistantRepeat").addEventListener("click", () => {
+      speakAssistant(assistantMessage.en, assistantMessage.es);
+    });
+    document.getElementById("assistantHide").addEventListener("click", () => {
+      document.getElementById("floatingAssistant").classList.add("collapsed");
+    });
+    document.getElementById("assistantAvatarButton").addEventListener("click", () => {
+      const assistant = document.getElementById("floatingAssistant");
+      assistant.classList.toggle("collapsed");
+      if (!assistant.classList.contains("collapsed")) {
+        speakAssistant(assistantMessage.en, assistantMessage.es);
+      }
+    });
+
+    applySettings();
+    setupVoiceLoading();
+    refreshStudentName();
+    updateAssistantForScreen("home");
+    if (!profile.studentName) {
+      setTimeout(() => show("profile"), 500);
+    }
+    setTimeout(() => {
+      speakAssistant(`Hello ${studentName()}! I am ready to learn with you.`, `Hola ${studentName()}, estoy lista para aprender contigo.`);
+    }, 650);
+  </script>
+</body>
+</html>
+
